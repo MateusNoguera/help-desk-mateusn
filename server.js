@@ -18,6 +18,20 @@ app.get("/tickets", (req, res) => {
     return res.json(tickets);
 });
 
+app.get("/tickets/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    const ticket = tickets.find((ticket) => ticket.id === id);
+
+    if (!ticket) {
+        return res.status(404).json({
+            message: "Ticket not found!"
+        });
+    }
+
+    return res.json(ticket);
+});
+
 app.post("/tickets", (req, res) => {
     const { title, description, priority } = req.body;
 
@@ -41,6 +55,32 @@ app.post("/tickets", (req, res) => {
     return res.status(201).json({
         message: "Ticket created",
         ticket: ticket
+    });
+});
+
+app.patch("/tickets/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+
+    const ticket = tickets.find((ticket) => ticket.id === id);
+
+    if (!ticket) {
+        return res.status(404).json({
+            message: "Ticket not found!"
+        });
+    }
+
+    if (!status) {
+        return res.status(400).json({
+            message: "Status is required!"
+        });
+    }
+
+    ticket.status = status;
+
+    return res.json({
+        message: "Ticket updated!",
+        ticket
     });
 });
 
