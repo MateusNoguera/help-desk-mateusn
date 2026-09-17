@@ -1,12 +1,11 @@
 import express from "express";
+import pool from "./database/db.js";
 
 const app = express();
 
 app.use(express.json());
 
 const PORT = 3000;
-
-const tickets = [];
 
 const validStatuses = [
     "OPEN",
@@ -28,25 +27,32 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/tickets", (req, res) => {
-    return res.json(tickets);
+app.get("/tickets", async (req, res) => {
+    const result = await pool.query(
+        "SELECT * FROM tickets ORDER BY id"
+    );
+
+    return res.json(result.rows);
 });
 
-app.get("/tickets/:id", (req, res) => {
+app.get("/tickets/:id", async (req, res) => {
     const id = Number(req.params.id);
 
-    const ticket = tickets.find((ticket) => ticket.id === id);
+    const result = await pool.query(
+        "SELECT * FROM tickets WHERE id = $1",
+        [id]
+    );
 
-    if (!ticket) {
+    if (result.rows.length === 0) {
         return res.status(404).json({
             message: "Ticket not found!"
         });
     }
 
-    return res.json(ticket);
+    return res.json(result.rows[0]);
 });
 
-app.post("/tickets", (req, res) => {
+app.post("/tickets", async (req, res) => {
     const { title, description, priority } = req.body;
 
     if (!title || !description) {
@@ -61,32 +67,37 @@ app.post("/tickets", (req, res) => {
         });
     }
 
-    const ticket = {
-        id: tickets.length + 1,
-        title: title,
-        description: description,
-        priority: priority || "MEDIUM",
-        status: "OPEN",
-        createdAt: new Date()
-    };
-
-    tickets.push(ticket);
+    const result = await pool.query(
+        `
+            INSERT INTO tickets (title, description, priority)
+            VALUES ($1, $2, $3)
+            RETURNING *
+        `,
+        [
+            title,
+            description,
+            priority || "MEDIUM"
+        ]
+    );
 
     return res.status(201).json({
-        message: "Ticket created",
-        ticket: ticket
+        message: "Ticket created!",
+        ticket: result.rows[0]
     });
 });
 
-app.patch("/tickets/:id", (req, res) => {
+app.patch("/tickets/:id", async (req, res) => {
     const id = Number(req.params.id);
     const { status } = req.body;
 
-    const ticket = tickets.find((ticket) => ticket.id === id);
+    const ticketResult = await pool.query(
+        "SELECT * FROM tickets WHERE id = $1",
+        [id]
+    );
 
-    if (!ticket) {
+    if (ticketResult.rows.length === 0) {
         return res.status(404).json({
-            message: "Ticket not found!"
+            message: "Ticket not found"
         });
     }
 
@@ -102,11 +113,25 @@ app.patch("/tickets/:id", (req, res) => {
         });
     }
 
-    ticket.status = status;
+    const result = await pool.query(
+        `
+            UPDATE tickets
+            SET status = $1
+            WHERE id = $2
+            RETURNING *
+        `,
+        [status, id]
+    );
+
+    if (result.rows.length === 0) {
+        return res.status(404).json({
+            message: "Ticket not found!"
+        });
+    }
 
     return res.json({
-        message: "Ticket updated",
-        ticket
+        message: "Ticket updated!",
+        ticket: result.rows[0]
     });
 });
 
