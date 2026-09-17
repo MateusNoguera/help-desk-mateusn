@@ -8,6 +8,20 @@ const PORT = 3000;
 
 const tickets = [];
 
+const validStatuses = [
+    "OPEN",
+    "IN_PROGRESS",
+    "RESOLVED",
+    "CLOSED"
+];
+
+const validPriorities = [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+];
+
 app.get("/", (req, res) => {
     res.json({
         message: "API running :)"
@@ -38,6 +52,12 @@ app.post("/tickets", (req, res) => {
     if (!title || !description) {
         return res.status(400).json({
             message: "Title and description are required!"
+        });
+    }
+
+    if (priority && !validPriorities.includes(priority)) {
+        return res.status(400).json({
+            message: "Invalid priority!"
         });
     }
 
@@ -76,10 +96,16 @@ app.patch("/tickets/:id", (req, res) => {
         });
     }
 
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+            message: "Invalid status!"
+        });
+    }
+
     ticket.status = status;
 
     return res.json({
-        message: "Ticket updated!",
+        message: "Ticket updated",
         ticket
     });
 });
