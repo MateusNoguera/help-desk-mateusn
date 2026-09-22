@@ -90,17 +90,6 @@ app.patch("/tickets/:id", async (req, res) => {
     const id = Number(req.params.id);
     const { status } = req.body;
 
-    const ticketResult = await pool.query(
-        "SELECT * FROM tickets WHERE id = $1",
-        [id]
-    );
-
-    if (ticketResult.rows.length === 0) {
-        return res.status(404).json({
-            message: "Ticket not found"
-        });
-    }
-
     if (!status) {
         return res.status(400).json({
             message: "Status is required!"
