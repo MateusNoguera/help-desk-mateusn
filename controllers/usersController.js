@@ -34,6 +34,12 @@ export async function createUser(req, res) {
     } catch (error) {
         console.error(error);
 
+        if (error.code === "23505") {
+            return res.status(409).json({
+                message: "Email already registered!"
+            });
+        }
+
         return res.status(500).json({
             message: "Internal server error!"
         });
