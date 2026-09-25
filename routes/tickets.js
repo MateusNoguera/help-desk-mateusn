@@ -1,9 +1,10 @@
 import express from "express";
 import { createTicket, deleteTicket, getTickets, getTicketsById, updateTicketStatus } from "../controllers/ticketsController.js";
+import { authenticate } from "../middlewares/authenticate.js";
 
 const router = express.Router();
 
-router.get("/", getTickets);
+router.get("/", authenticate, getTickets);
 
 router.get("/:id", getTicketsById);
 
