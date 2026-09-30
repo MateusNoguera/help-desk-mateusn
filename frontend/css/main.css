@@ -1,0 +1,106 @@
+:root {
+    --bg-color: #121826;
+    --card-color: #1e293b;
+    --input-color: #0f172a;
+
+    --text-color: #f8fafc;
+    --muted-color: #94a3b8;
+
+    --border-color: #334155;
+
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+
+    font-family: Arial, sans-serif;
+}
+
+main {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 40px;
+
+    background-color: var(--card-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+h1 {
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    font-size: 14px;
+    color: var(--muted-color);
+}
+
+input {
+    width: 100%;
+
+    padding: 12px;
+
+    background-color: var(--input-color);
+    color: var(--text-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+}
+
+button {
+    margin-top: 10px;
+    padding: 12px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: var(--primary-color);
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+#loginMessage {
+    margin-top: 20px;
+
+    text-align: center;
+    color: var(--muted-color);
+}
