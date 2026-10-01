@@ -104,3 +104,44 @@ button:hover {
     text-align: center;
     color: var(--muted-color);
 }
+
+#ticketsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ticket-card {
+    padding: 20px;
+
+    background-color: var(--input-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.ticket-card h2 {
+    margin-bottom: 8px;
+}
+
+.ticket-card p {
+    margin: 4px 0;
+}
+
+.tickets-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.tickets-header h1 {
+    margin: 0;
+}
+
+#logoutButton {
+    width: auto;
+    margin: 0;
+    padding: 10px 18px;
+}
