@@ -14,6 +14,20 @@
         <button id="logoutButton">Sair</button>
     </div>
 
+    <form id="ticketForm">
+        <input type="text" id="title" placeholder="Título" required>
+        <textarea id="description" placeholder="Descrição" required></textarea>
+
+        <select id="priority">
+            <option value="LOW">Baixa</option>
+            <option value="MEDIUM" selected>Média</option>
+            <option value="HIGH">Alta</option>
+            <option value="CRITICAL">Crítica</option>
+        </select>
+
+        <button type="submit">Criar ticket</button>
+    </form>
+
     <div id="ticketsList"></div>
 </main>
 
