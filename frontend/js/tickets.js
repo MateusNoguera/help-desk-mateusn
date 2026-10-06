@@ -3,11 +3,35 @@ const ticketsList = document.getElementById("ticketsList");
 const logoutButton = document.getElementById("logoutButton");
 const ticketForm = document.getElementById("ticketForm");
 
+let currentUser = null;
+
 
 logoutButton.addEventListener("click", () => {
     localStorage.removeItem("token");
     window.location.href = "/login.html";
 });
+
+async function loadCurrentUser() {
+    try {
+        const response = await fetch("/auth/me", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+            return;
+        }
+
+        const data = await response.json();
+
+        currentUser = data.user;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 async function loadTickets() {
     if (!token) {
@@ -42,6 +66,21 @@ async function loadTickets() {
                 <p>Prioridade: ${ticket.priority}</p>
                 <p>Status: ${ticket.status}</p>
             `;
+
+            if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
+                const statusSelect = document.createElement("select");
+
+                statusSelect.innerHTML = `
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="RESOLVED">RESOLVED</option>
+                    <option value="CLOSED">CLOSED</option>
+                `;
+
+                statusSelect.value = ticket.status;
+
+                ticketElement.appendChild(statusSelect);
+            }
 
             ticketsList.appendChild(ticketElement);
         });
@@ -88,4 +127,9 @@ ticketForm.addEventListener("submit", async (event) => {
     }
 });
 
-loadTickets();
+async function init() {
+    await loadCurrentUser();
+    await loadTickets();
+}
+
+init();
