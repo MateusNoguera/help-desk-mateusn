@@ -68,18 +68,50 @@ async function loadTickets() {
             `;
 
             if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
-                const statusSelect = document.createElement("select");
+                const editButton = document.createElement("button");
+                editButton.textContent = "Alterar";
+                editButton.classList.add("edit-button");
 
-                statusSelect.innerHTML = `
-                    <option value="OPEN">OPEN</option>
-                    <option value="IN_PROGRESS">IN_PROGRESS</option>
-                    <option value="RESOLVED">RESOLVED</option>
-                    <option value="CLOSED">CLOSED</option>
-                `;
+                editButton.addEventListener("click", () => {
+                    ticketElement.innerHTML = `
+                        <h2>${ticket.title}</h2>
+                        <p>${ticket.description}</p>
 
-                statusSelect.value = ticket.status;
+                        <label for="priority-${ticket.id}">Prioridade</label>
+                        <select id="priority-${ticket.id}">
+                            <option value="LOW">LOW</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="HIGH">HIGH</option>
+                            <option value="CRITICAL">CRITICAL</option>
+                        </select>
 
-                ticketElement.appendChild(statusSelect);
+                        <label for="status-${ticket.id}">Status</label>
+                        <select id="status-${ticket.id}">
+                            <option value="OPEN">OPEN</option>
+                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                            <option value="RESOLVED">RESOLVED</option>
+                            <option value="CLOSED">CLOSED</option>
+                        </select>
+
+                        <div class="edit-actions">
+                            <button class="save-button">Salvar</button>
+                            <button class="cancel-button">Cancelar</button>
+                        </div>
+                    `;
+
+                    const prioritySelect = document.getElementById(`priority-${ticket.id}`);
+                    const statusSelect = document.getElementById(`status-${ticket.id}`);
+                    const cancelButton = ticketElement.querySelector(".cancel-button");
+
+                    prioritySelect.value = ticket.priority;
+                    statusSelect.value = ticket.status;
+
+                    cancelButton.addEventListener("click", () => {
+                        loadTickets();
+                    });
+                });
+
+                ticketElement.appendChild(editButton);
             }
 
             ticketsList.appendChild(ticketElement);

@@ -181,3 +181,26 @@ textarea {
     border: 1px solid var(--border-color);
     border-radius: 6px;
 }
+
+.edit-button {
+    width: auto;
+    margin-top: 16px;
+    padding: 10px 18px;
+}
+
+.ticket-card select {
+    width: 100%;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-actions button {
+    flex: 1;
+    margin: 0;
+}
