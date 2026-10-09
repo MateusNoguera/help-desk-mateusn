@@ -101,14 +101,14 @@ export async function createTicket(req, res) {
     }
 };
 
-export async function updateTicketStatus(req, res) {
+export async function updateTicket(req, res) {
     try {
         const id = Number(req.params.id);
-        const { status } = req.body;
+        const { status, priority } = req.body;
 
-        if (!status) {
+        if (!status || !priority) {
             return res.status(400).json({
-                message: "Status is required!"
+                message: "Status and priority are required!"
             });
         }
 
@@ -118,14 +118,21 @@ export async function updateTicketStatus(req, res) {
             });
         }
 
+        if (!validPriorities.includes(priority)) {
+            return res.status(400).json({
+                message: "Invalid priority!"
+            });
+        }
+
         const result = await pool.query(
             `
                 UPDATE tickets
-                SET status = $1
-                WHERE id = $2
+                SET status = $1,
+                    priority = $2
+                WHERE id = $3
                 RETURNING *
             `,
-            [status, id]
+            [status, priority, id]
         );
 
         if (result.rows.length === 0) {
@@ -137,7 +144,7 @@ export async function updateTicketStatus(req, res) {
         return res.json({
             message: "Ticket updated!",
             ticket: result.rows[0]
-        });    
+        });
     } catch (error) {
         console.error(error);
 
@@ -145,7 +152,7 @@ export async function updateTicketStatus(req, res) {
             message: "Internal server error!"
         });
     }
-};
+}
 
 export async function deleteTicket(req, res) {
     try {

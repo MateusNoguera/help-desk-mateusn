@@ -102,12 +102,41 @@ async function loadTickets() {
                     const prioritySelect = document.getElementById(`priority-${ticket.id}`);
                     const statusSelect = document.getElementById(`status-${ticket.id}`);
                     const cancelButton = ticketElement.querySelector(".cancel-button");
+                    const saveButton = ticketElement.querySelector(".save-button");
 
                     prioritySelect.value = ticket.priority;
                     statusSelect.value = ticket.status;
 
                     cancelButton.addEventListener("click", () => {
                         loadTickets();
+                    });
+
+                    saveButton.addEventListener("click", async () => {
+                        try {
+                            const response = await fetch(`/tickets/${ticket.id}`, {
+                                method: "PATCH",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${token}`
+                                },
+                                body: JSON.stringify({
+                                    status: statusSelect.value,
+                                    priority: prioritySelect.value
+                                })
+                            });
+
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                alert(data.message);
+                                return;
+                            }
+
+                            await loadTickets();
+                        } catch (error) {
+                            console.error(error);
+                            alert("Erro ao atualizar ticket.");
+                        }
                     });
                 });
 

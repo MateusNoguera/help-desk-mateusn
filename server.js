@@ -1,7 +1,7 @@
 import express from "express";
-import ticketsRouter from "./routes/tickets.js";
-import usersRouter from "./routes/users.js";
-import authRouter from "./routes/auth.js";
+import ticketsRouter from "./routes/ticketsRoutes.js";
+import usersRouter from "./routes/usersRoutes.js";
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
 
