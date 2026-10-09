@@ -204,3 +204,41 @@ textarea {
     flex: 1;
     margin: 0;
 }
+
+.user-card {
+    padding: 20px;
+    margin-bottom: 16px;
+
+    background-color: var(--input-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.user-card select {
+    width: 100%;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#usersButton {
+    padding: 10px 18px;
+
+    background-color: var(--primary-color);
+    color: white;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#usersButton:hover {
+    background-color: var(--primary-hover);
+}
