@@ -57,8 +57,8 @@ export async function getTicketsById(req, res) {
 
 export async function createTicket(req, res) {
     try {
-
         const { title, description, priority } = req.body;
+        const userId = req.user.id;
 
         if (!title || !description) {
             return res.status(400).json({
@@ -74,32 +74,25 @@ export async function createTicket(req, res) {
 
         const result = await pool.query(
             `
-                INSERT INTO tickets (title, description, priority)
-                VALUES ($1, $2, $3)
+                INSERT INTO tickets (title, description, priority, created_by)
+                VALUES ($1, $2, $3, $4)
                 RETURNING *
             `,
-            [
-                title,
-                description,
-                priority || "MEDIUM"
-            ]
+            [title, description, priority || "MEDIUM", userId]
         );
 
         return res.status(201).json({
             message: "Ticket created!",
             ticket: result.rows[0]
         });
-
     } catch (error) {
-        
         console.error(error);
 
         return res.status(500).json({
             message: "Internal server error!"
         });
-
     }
-};
+}
 
 export async function updateTicket(req, res) {
     try {
