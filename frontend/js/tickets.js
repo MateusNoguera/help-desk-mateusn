@@ -46,10 +46,14 @@ async function loadTickets() {
             }
         });
 
-        if (response.status === 401 || response.status === 403) {
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
-            return;
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem("token");
+                window.location.href = "/login.html";
+                return;
+            }
+
+            throw new Error("Erro ao carregar tickets!");
         }
 
         const tickets = await response.json();
@@ -71,6 +75,7 @@ async function loadTickets() {
 
             if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
                 const editButton = document.createElement("button");
+
                 editButton.textContent = "Alterar";
                 editButton.classList.add("edit-button");
 
@@ -88,12 +93,7 @@ async function loadTickets() {
                         </select>
 
                         <label for="status-${ticket.id}">Status</label>
-                        <select id="status-${ticket.id}">
-                            <option value="OPEN">OPEN</option>
-                            <option value="IN_PROGRESS">IN_PROGRESS</option>
-                            <option value="RESOLVED">RESOLVED</option>
-                            <option value="CLOSED">CLOSED</option>
-                        </select>
+                        <select id="status-${ticket.id}"></select>
 
                         <label for="assigned-${ticket.id}">Responsável</label>
                         <select id="assigned-${ticket.id}">
@@ -114,21 +114,49 @@ async function loadTickets() {
                     const saveButton = ticketElement.querySelector(".save-button");
 
                     prioritySelect.value = ticket.priority;
+
+                    const allowedTransitions = {
+                        OPEN: ["IN_PROGRESS"],
+                        IN_PROGRESS: ["RESOLVED"],
+                        RESOLVED: ["IN_PROGRESS", "CLOSED"],
+                        CLOSED: []
+                    };
+
+                    const availableStatuses = [
+                        ticket.status,
+                        ...allowedTransitions[ticket.status]
+                    ];
+
+                    availableStatuses.forEach((status) => {
+                        const option = document.createElement("option");
+
+                        option.value = status;
+                        option.textContent = status;
+
+                        statusSelect.appendChild(option);
+                    });
+
                     statusSelect.value = ticket.status;
 
                     assignableUsers.forEach((user) => {
                         const option = document.createElement("option");
+
                         option.value = user.id;
                         option.textContent = `${user.name} (${user.role})`;
+
                         assignedSelect.appendChild(option);
                     });
+
                     assignedSelect.value = ticket.assigned_to || "";
 
-                    cancelButton.addEventListener("click", () => {
-                        loadTickets();
-                    });
-
                     saveButton.addEventListener("click", async () => {
+                        const statusesThatRequireAssignee = ["IN_PROGRESS", "RESOLVED", "CLOSED"];
+
+                        if (statusesThatRequireAssignee.includes(statusSelect.value) && !assignedSelect.value) {
+                            alert("Selecione um responsável para este status.");
+                            return;
+                        }
+
                         try {
                             const response = await fetch(`/tickets/${ticket.id}`, {
                                 method: "PATCH",
@@ -155,6 +183,10 @@ async function loadTickets() {
                             console.error(error);
                             alert("Erro ao atualizar ticket.");
                         }
+                    });
+
+                    cancelButton.addEventListener("click", async () => {
+                        await loadTickets();
                     });
                 });
 

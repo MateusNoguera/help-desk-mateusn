@@ -148,14 +148,8 @@ export async function createTicket(req, res) {
 
 export async function updateTicket(req, res) {
     try {
-        const id = Number(req.params.id);
+        const { id } = req.params;
         const { status, priority, assigned_to } = req.body;
-
-        if (!status || !priority) {
-            return res.status(400).json({
-                message: "Status and priority are required!"
-            });
-        }
 
         if (!validStatuses.includes(status)) {
             return res.status(400).json({
@@ -168,10 +162,39 @@ export async function updateTicket(req, res) {
                 message: "Invalid priority!"
             });
         }
-        
-        if (status === "CLOSED" && !assigned_to) {
+
+        const currentTicket = await pool.query(
+            "SELECT * FROM tickets WHERE id = $1",
+            [id]
+        );
+
+        if (currentTicket.rows.length === 0) {
+            return res.status(404).json({
+                message: "Ticket not found!"
+            });
+        }
+
+        const currentStatus = currentTicket.rows[0].status;
+
+        const allowedTransitions = {
+            OPEN: ["IN_PROGRESS"],
+            IN_PROGRESS: ["RESOLVED"],
+            RESOLVED: ["IN_PROGRESS", "CLOSED"],
+            CLOSED: []
+        };
+
+        if (
+            status !== currentStatus &&
+            !allowedTransitions[currentStatus].includes(status)
+        ) {
             return res.status(400).json({
-                message: "Closed ticket must have an assigned user!"
+                message: `Invalid status transition from ${currentStatus} to ${status}!`
+            });
+        }
+
+        if (["IN_PROGRESS", "RESOLVED", "CLOSED"].includes(status) && !assigned_to) {
+            return res.status(400).json({
+                message: "Ticket must have an assigned user for this status"
             });
         }
 
@@ -206,16 +229,7 @@ export async function updateTicket(req, res) {
             [status, priority, assigned_to || null, id]
         );
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                message: "Ticket not found!"
-            });
-        }
-
-        return res.json({
-            message: "Ticket updated!",
-            ticket: result.rows[0]
-        });
+        return res.json(result.rows[0]);
     } catch (error) {
         console.error(error);
 
