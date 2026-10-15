@@ -16,16 +16,25 @@ const validPriorities = [
 
 export async function getTickets(req, res) {
     try {
-        const result = await pool.query(
-            "SELECT * FROM tickets ORDER BY id"
-        );
+        let result;
+
+        if (req.user.role === "EMPLOYEE") {
+            result = await pool.query(
+                "SELECT * FROM tickets WHERE created_by = $1 ORDER BY id",
+                [req.user.id]
+            );
+        } else {
+            result = await pool.query(
+                "SELECT * FROM tickets ORDER BY id"
+            );
+        }
 
         return res.json(result.rows);
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
-            message: "Internal server error"
+            message: "Internal server error!"
         });
     }
 }
@@ -97,7 +106,7 @@ export async function createTicket(req, res) {
 export async function updateTicket(req, res) {
     try {
         const id = Number(req.params.id);
-        const { status, priority } = req.body;
+        const { status, priority, assigned_to } = req.body;
 
         if (!status || !priority) {
             return res.status(400).json({
@@ -117,15 +126,35 @@ export async function updateTicket(req, res) {
             });
         }
 
+        if (assigned_to) {
+            const userResult = await pool.query(
+                "SELECT id, role FROM users WHERE id = $1",
+                [assigned_to]
+            );
+
+            if (userResult.rows.length === 0) {
+                return res.status(404).json({
+                    message: "Assigned user not found!"
+                });
+            }
+
+            if (!["SUPPORT", "ADMIN"].includes(userResult.rows[0].role)) {
+                return res.status(400).json({
+                    message: "Assigned user must be SUPPORT or ADMIN!"
+                });
+            }
+        }
+
         const result = await pool.query(
             `
                 UPDATE tickets
                 SET status = $1,
-                    priority = $2
-                WHERE id = $3
+                    priority = $2,
+                    assigned_to = $3
+                WHERE id = $4
                 RETURNING *
             `,
-            [status, priority, id]
+            [status, priority, assigned_to || null, id]
         );
 
         if (result.rows.length === 0) {
