@@ -20,12 +20,27 @@ export async function getTickets(req, res) {
 
         if (req.user.role === "EMPLOYEE") {
             result = await pool.query(
-                "SELECT * FROM tickets WHERE created_by = $1 ORDER BY id",
+                `
+                    SELECT
+                        tickets.*,
+                        users.name AS assigned_to_name
+                    FROM tickets
+                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    WHERE tickets.created_by = $1
+                    ORDER BY tickets.id
+                `,
                 [req.user.id]
             );
         } else {
             result = await pool.query(
-                "SELECT * FROM tickets ORDER BY id"
+                `
+                    SELECT
+                        tickets.*,
+                        users.name AS assigned_to_name
+                    FROM tickets
+                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    ORDER BY tickets.id
+                `
             );
         }
 

@@ -116,3 +116,24 @@ export async function updateUserRole(req, res) {
         });
     }
 }
+
+export async function getAssignableUsers(req, res) {
+    try {
+        const result = await pool.query(
+            `
+                SELECT id, name, email, role
+                FROM users
+                WHERE role IN ('SUPPORT', 'ADMIN')
+                ORDER BY name
+            `
+        );
+
+        return res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+}

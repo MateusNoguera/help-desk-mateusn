@@ -4,7 +4,7 @@ const logoutButton = document.getElementById("logoutButton");
 const ticketForm = document.getElementById("ticketForm");
 
 let currentUser = null;
-
+let assignableUsers = [];
 
 logoutButton.addEventListener("click", () => {
     localStorage.removeItem("token");
@@ -65,6 +65,7 @@ async function loadTickets() {
                 <p>${ticket.description}</p>
                 <p>Prioridade: ${ticket.priority}</p>
                 <p>Status: ${ticket.status}</p>
+                <p>Responsável: ${ticket.assigned_to_name || "Sem responsável"}</p>
             `;
 
             if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
@@ -93,6 +94,11 @@ async function loadTickets() {
                             <option value="CLOSED">CLOSED</option>
                         </select>
 
+                        <label for="assigned-${ticket.id}">Responsável</label>
+                        <select id="assigned-${ticket.id}">
+                            <option value="">Sem responsável</option>
+                        </select>
+
                         <div class="edit-actions">
                             <button class="save-button">Salvar</button>
                             <button class="cancel-button">Cancelar</button>
@@ -101,11 +107,21 @@ async function loadTickets() {
 
                     const prioritySelect = document.getElementById(`priority-${ticket.id}`);
                     const statusSelect = document.getElementById(`status-${ticket.id}`);
+                    const assignedSelect = document.getElementById(`assigned-${ticket.id}`);
+
                     const cancelButton = ticketElement.querySelector(".cancel-button");
                     const saveButton = ticketElement.querySelector(".save-button");
 
                     prioritySelect.value = ticket.priority;
                     statusSelect.value = ticket.status;
+
+                    assignableUsers.forEach((user) => {
+                        const option = document.createElement("option");
+                        option.value = user.id;
+                        option.textContent = `${user.name} (${user.role})`;
+                        assignedSelect.appendChild(option);
+                    });
+                    assignedSelect.value = ticket.assigned_to || "";
 
                     cancelButton.addEventListener("click", () => {
                         loadTickets();
@@ -121,7 +137,8 @@ async function loadTickets() {
                                 },
                                 body: JSON.stringify({
                                     status: statusSelect.value,
-                                    priority: prioritySelect.value
+                                    priority: prioritySelect.value,
+                                    assigned_to: assignedSelect.value ? Number(assignedSelect.value) : null
                                 })
                             });
 
@@ -188,8 +205,31 @@ ticketForm.addEventListener("submit", async (event) => {
     }
 });
 
+async function loadAssignableUsers() {
+    try {
+        const response = await fetch("/users/assignable", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        assignableUsers = await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function init() {
     await loadCurrentUser();
+
+    if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
+        await loadAssignableUsers();
+    }
+
     await loadTickets();
 }
 
