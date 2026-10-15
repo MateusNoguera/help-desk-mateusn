@@ -56,12 +56,36 @@ export async function getTickets(req, res) {
 
 export async function getTicketsById(req, res) {
     try {
-        const id = Number(req.params.id);
+        const { id } = req.params;
 
-        const result = await pool.query(
-            "SELECT * FROM tickets WHERE id = $1",
-            [id]
-        );
+        let result;
+
+        if (req.user.role === "EMPLOYEE") {
+            result = await pool.query(
+                `
+                    SELECT
+                        tickets.*,
+                        users.name AS assigned_to_name
+                    FROM tickets
+                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    WHERE tickets.id = $1
+                    AND tickets.created_by = $2
+                `,
+                [id, req.user.id]
+            );
+        } else {
+            result = await pool.query(
+                `
+                    SELECT
+                        tickets.*,
+                        users.name AS assigned_to_name
+                    FROM tickets
+                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    WHERE tickets.id = $1
+                `,
+                [id]
+            );
+        }
 
         if (result.rows.length === 0) {
             return res.status(404).json({
@@ -74,10 +98,10 @@ export async function getTicketsById(req, res) {
         console.error(error);
 
         return res.status(500).json({
-            message: "Internal server error"
+            message: "Internal server error!"
         });
     }
-};
+}
 
 export async function createTicket(req, res) {
     try {

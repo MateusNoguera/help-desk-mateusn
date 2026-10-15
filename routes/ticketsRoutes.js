@@ -13,6 +13,6 @@ router.post("/", authenticate, createTicket);
 
 router.patch("/:id", authenticate, authorize("SUPPORT", "ADMIN"), updateTicket);
 
-router.delete("/:id", authenticate, deleteTicket);
+router.delete("/:id", authenticate, authorize("ADMIN"), deleteTicket);
 
 export default router;
