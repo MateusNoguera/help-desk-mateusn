@@ -23,9 +23,11 @@ export async function getTickets(req, res) {
                 `
                     SELECT
                         tickets.*,
-                        users.name AS assigned_to_name
+                        creator.name AS created_by_name,
+                        assignee.name AS assigned_to_name
                     FROM tickets
-                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    LEFT JOIN users AS creator ON creator.id = tickets.created_by
+                    LEFT JOIN users AS assignee ON assignee.id = tickets.assigned_to
                     WHERE tickets.created_by = $1
                     ORDER BY tickets.id
                 `,
@@ -36,9 +38,11 @@ export async function getTickets(req, res) {
                 `
                     SELECT
                         tickets.*,
-                        users.name AS assigned_to_name
+                        creator.name AS created_by_name,
+                        assignee.name AS assigned_to_name
                     FROM tickets
-                    LEFT JOIN users ON users.id = tickets.assigned_to
+                    LEFT JOIN users AS creator ON creator.id = tickets.created_by
+                    LEFT JOIN users AS assignee ON assignee.id = tickets.assigned_to
                     ORDER BY tickets.id
                 `
             );
@@ -162,6 +166,12 @@ export async function updateTicket(req, res) {
         if (!validPriorities.includes(priority)) {
             return res.status(400).json({
                 message: "Invalid priority!"
+            });
+        }
+        
+        if (status === "CLOSED" && !assigned_to) {
+            return res.status(400).json({
+                message: "Closed ticket must have an assigned user!"
             });
         }
 

@@ -65,6 +65,7 @@ async function loadTickets() {
                 <p>${ticket.description}</p>
                 <p>Prioridade: ${ticket.priority}</p>
                 <p>Status: ${ticket.status}</p>
+                <p>Criado por: ${ticket.created_by_name || "Usuário não identificado"}</p>
                 <p>Responsável: ${ticket.assigned_to_name || "Sem responsável"}</p>
             `;
 
