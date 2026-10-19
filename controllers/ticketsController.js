@@ -168,17 +168,31 @@ export async function updateTicket(req, res) {
             [id]
         );
 
+        const ticket = currentTicket.rows[0];
+
+        if (req.user.role === "SUPPORT" && ticket.assigned_to !== req.user.id) {
+            return res.status(403).json({
+                message: "You can only update tickets assigned to you!"
+            });
+        }
+
+        if (req.user.role === "SUPPORT" && assigned_to !== req.user.id && assigned_to !== null) {
+            return res.status(403).json({
+                message: "Support users cannot reassign tickets!"
+            });
+        }
+
         if (currentTicket.rows.length === 0) {
             return res.status(404).json({
                 message: "Ticket not found!"
             });
         }
 
-        const currentStatus = currentTicket.rows[0].status;
+        const currentStatus = ticket.status;
 
         const allowedTransitions = {
             OPEN: ["IN_PROGRESS"],
-            IN_PROGRESS: ["RESOLVED"],
+            IN_PROGRESS: ["OPEN", "RESOLVED"],
             RESOLVED: ["IN_PROGRESS", "CLOSED"],
             CLOSED: []
         };
@@ -270,3 +284,54 @@ export async function deleteTicket(req, res) {
         });
     }
 };
+
+export async function claimTicket(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const ticketResult = await pool.query(
+            "SELECT * FROM tickets WHERE id = $1",
+            [id]
+        );
+
+        if (ticketResult.rows.length === 0) {
+            return res.status(404).json({
+                message: "Ticket not found!"
+            });
+        }
+
+        const ticket = ticketResult.rows[0];
+
+        if (ticket.assigned_to) {
+            return res.status(400).json({
+                message: "Ticket already has an assigned user!"
+            });
+        }
+
+        if (ticket.status !== "OPEN") {
+            return res.status(400).json({
+                message: "Only open tickets can be claimed!"
+            });
+        }
+
+        const result = await pool.query(
+            `
+                UPDATE tickets
+                SET assigned_to = $1,
+                    status = 'IN_PROGRESS'
+                WHERE id = $2
+                RETURNING *
+            `,
+            [userId, id]
+        );
+
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error!"
+        });
+    }
+}
