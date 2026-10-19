@@ -236,7 +236,8 @@ export async function updateTicket(req, res) {
                 UPDATE tickets
                 SET status = $1,
                     priority = $2,
-                    assigned_to = $3
+                    assigned_to = $3,
+                    updated_at = CURRENT_TIMESTAMP
                 WHERE id = $4
                 RETURNING *
             `,
@@ -319,7 +320,8 @@ export async function claimTicket(req, res) {
             `
                 UPDATE tickets
                 SET assigned_to = $1,
-                    status = 'IN_PROGRESS'
+                    status = 'IN_PROGRESS',
+                    updated_at = CURRENT_TIMESTAMP
                 WHERE id = $2
                 RETURNING *
             `,

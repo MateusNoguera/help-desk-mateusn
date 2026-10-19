@@ -33,6 +33,10 @@ async function loadCurrentUser() {
     }
 }
 
+function formatDate(date) {
+    return new Date(date).toLocaleString("pt-BR");
+}
+
 async function loadTickets() {
     if (!token) {
         window.location.href = "/login.html";
@@ -71,6 +75,8 @@ async function loadTickets() {
                 <p>Status: ${ticket.status}</p>
                 <p>Criado por: ${ticket.created_by_name || "Usuário não identificado"}</p>
                 <p>Responsável: ${ticket.assigned_to_name || "Sem responsável"}</p>
+                <p>Criado em: ${formatDate(ticket.created_at)}</p>
+                <p>Atualizado em: ${formatDate(ticket.updated_at)}</p>
             `;
 
             if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
@@ -175,14 +181,29 @@ async function loadTickets() {
 
                         statusSelect.value = ticket.status;
 
-                        assignableUsers.forEach((user) => {
-                            const option = document.createElement("option");
+                        if (currentUser.role === "ADMIN") {
+                            assignableUsers.forEach((user) => {
+                                const option = document.createElement("option");
 
-                            option.value = user.id;
-                            option.textContent = `${user.name} (${user.role})`;
+                                option.value = user.id;
+                                option.textContent = `${user.name} (${user.role})`;
 
-                            assignedSelect.appendChild(option);
-                        });
+                                assignedSelect.appendChild(option);
+                            });
+                        }
+
+                        if (currentUser.role === "SUPPORT") {
+                            const supportUser = assignableUsers.find((user) => user.id === currentUser.id);
+
+                            if (supportUser) {
+                                const option = document.createElement("option");
+
+                                option.value = supportUser.id;
+                                option.textContent = `${supportUser.name} (${supportUser.role})`;
+
+                                assignedSelect.appendChild(option);
+                            }
+                        }
 
                         assignedSelect.value = ticket.assigned_to || "";
 
@@ -229,6 +250,44 @@ async function loadTickets() {
 
                     ticketElement.appendChild(editButton);
                     
+                }
+
+                if (currentUser.role === "ADMIN") {
+                    const deleteButton = document.createElement("button");
+
+                    deleteButton.textContent = "Excluir";
+                    deleteButton.classList.add("delete-button");
+
+                    deleteButton.addEventListener("click", async () => {
+                        const confirmed = confirm(`Deseja realmente excluir o ticket "${ticket.title}"?`);
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch(`/tickets/${ticket.id}`, {
+                                method: "DELETE",
+                                headers: {
+                                    Authorization: `Bearer ${token}`
+                                }
+                            });
+
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                alert(data.message);
+                                return;
+                            }
+
+                            await loadTickets();
+                        } catch (error) {
+                            console.error(error);
+                            alert("Erro ao excluir ticket.");
+                        }
+                    });
+
+                    ticketElement.appendChild(deleteButton);
                 }
 
             }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minha conta - Help Desk</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <main class="auth-container">
+        <h1>Minha conta</h1>
+
+        <form id="passwordForm">
+            <input type="password" id="currentPassword" placeholder="Senha atual" required>
+            <input type="password" id="newPassword" placeholder="Nova senha" required>
+
+            <button type="submit">Alterar senha</button>
+        </form>
+
+        <p id="passwordMessage"></p>
+
+        <a href="/tickets.html">Voltar para Tickets</a>
+    </main>
+
+    <script src="/js/account.js"></script>
+</body>
+</html>
