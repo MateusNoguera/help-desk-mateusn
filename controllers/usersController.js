@@ -188,3 +188,42 @@ export async function updateOwnPassword(req, res) {
         });
     }
 }
+
+export async function updateOwnName(req, res) {
+    try {
+        const userId = req.user.id;
+        const { name } = req.body;
+
+        if (!name) {
+            return res.status(400).json({
+                message: "Name is required!"
+            });
+        }
+
+        const result = await pool.query(
+            `
+                UPDATE users
+                SET name = $1
+                WHERE id = $2
+                RETURNING id, name, email, role, created_at
+            `,
+            [name, userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "User not found!"
+            });
+        }
+
+        return res.json({
+            user: result.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error!"
+        });
+    }
+}

@@ -12,6 +12,19 @@
     <main class="auth-container">
         <h1>Minha conta</h1>
 
+        <section class="account-info">
+            <p><strong>Nome:</strong> <span id="accountName"></span></p>
+            <p><strong>Email:</strong> <span id="accountEmail"></span></p>
+            <p><strong>Role:</strong> <span id="accountRole"></span></p>
+        </section>
+
+        <form id="nameForm">
+            <input type="text" id="newName" placeholder="Novo nome" required>
+            <button type="submit">Alterar nome</button>
+        </form>
+
+        <p id="nameMessage"></p>
+
         <form id="passwordForm">
             <input type="password" id="currentPassword" placeholder="Senha atual" required>
             <input type="password" id="newPassword" placeholder="Nova senha" required>
