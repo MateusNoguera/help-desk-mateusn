@@ -37,6 +37,7 @@ async function loadUsers() {
                 <h2>${user.name}</h2>
                 <p>${user.email}</p>
                 <p>Role: ${user.role}</p>
+                <p>Status: ${user.active ? "Ativo" : "Inativo"}</p>
             `;
 
             const editButton = document.createElement("button");
@@ -100,6 +101,42 @@ async function loadUsers() {
             });
 
             userElement.appendChild(editButton);
+
+            const activeButton = document.createElement("button");
+
+            activeButton.textContent = user.active ? "Desativar" : "Ativar";
+            activeButton.classList.add("active-button");
+
+            activeButton.addEventListener("click", async () => {
+                const newActiveStatus = !user.active;
+
+                try {
+                    const response = await fetch(`/users/${user.id}/active`, {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            active: newActiveStatus
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert(data.message);
+                        return;
+                    }
+
+                    await loadUsers();
+                } catch (error) {
+                    console.error(error);
+                    alert("Erro ao alterar status do usuário.");
+                }
+            });
+
+            userElement.appendChild(activeButton);
 
             usersList.appendChild(userElement);
         });

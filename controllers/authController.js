@@ -25,10 +25,13 @@ export async function login(req, res) {
 
         const user = result.rows[0];
 
-        const passwordMatches = await bcrypt.compare(
-            password,
-            user.password
-        );
+        if (!user.active) {
+            return res.status(403).json({
+                message: "User account is inactive!"
+            });
+        }
+
+        const passwordMatches = await bcrypt.compare(password, user.password);
 
         if (!passwordMatches) {
             return res.status(401).json({

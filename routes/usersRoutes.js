@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, getUsers, updateUserRole, getAssignableUsers, updateOwnPassword, updateOwnName } from "../controllers/usersController.js";
+import { createUser, getUsers, updateUserRole, getAssignableUsers, updateOwnPassword, updateOwnName, updateUserActiveStatus } from "../controllers/usersController.js";
 import { authenticate } from "../middlewares/authenticate.js";
 import { authorize } from "../middlewares/authorize.js";
 
@@ -16,5 +16,7 @@ router.patch("/me/password", authenticate, updateOwnPassword);
 router.get("/assignable", authenticate, authorize("SUPPORT", "ADMIN"), getAssignableUsers);
 
 router.patch("/:id/role", authenticate, authorize("ADMIN"), updateUserRole);
+
+router.patch("/:id/active", authenticate, authorize("ADMIN"), updateUserActiveStatus);
 
 export default router;
