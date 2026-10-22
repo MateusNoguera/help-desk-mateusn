@@ -17,6 +17,18 @@ export async function createUser(req, res) {
             });
         }
 
+        if (name.trim().length < 2) {
+            return res.status(400).json({
+                message: "Name must have at least 2 characters!"
+            });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({
+                message: "Password must have at least 8 characters!"
+            });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const result = await pool.query(
@@ -152,6 +164,18 @@ export async function updateOwnPassword(req, res) {
         if (!currentPassword || !newPassword) {
             return res.status(400).json({
                 message: "Current password and new password are required!"
+            });
+        }
+
+        if (currentPassword === newPassword) {
+            return res.status(400).json({
+                message: "New password must be different from current password!"
+            });
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({
+                message: "New password must have at least 8 characters!"
             });
         }
 
