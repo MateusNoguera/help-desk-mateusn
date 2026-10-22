@@ -76,6 +76,12 @@ export async function updateUserRole(req, res) {
         const id = Number(req.params.id);
         const { role } = req.body;
 
+        if (Number(id) === req.user.id) {
+            return res.status(400).json({
+                message: "You cannot change your own role!"
+            });
+        }
+
         if (!role) {
             return res.status(400).json({
                 message: "Role is required!"
@@ -232,6 +238,12 @@ export async function updateUserActiveStatus(req, res) {
     try {
         const { id } = req.params;
         const { active } = req.body;
+
+        if (Number(id) === req.user.id && active === false) {
+            return res.status(400).json({
+                message: "You cannot deactivate your own account!"
+            });
+        }
 
         if (typeof active !== "boolean") {
             return res.status(400).json({

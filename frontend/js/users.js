@@ -1,5 +1,6 @@
 const token = localStorage.getItem("token");
 const usersList = document.getElementById("usersList");
+let currentUser = null;
 
 async function loadUsers() {
     if (!token) {
@@ -43,6 +44,12 @@ async function loadUsers() {
             const editButton = document.createElement("button");
             editButton.textContent = "Alterar";
             editButton.classList.add("edit-button");
+
+            if (user.id === currentUser.id) {
+                editButton.disabled = true;
+                editButton.textContent = "Role atual";
+                editButton.title = "Você não pode alterar a própria role!";
+            }
 
             editButton.addEventListener("click", () => {
                 userElement.innerHTML = `
@@ -106,6 +113,12 @@ async function loadUsers() {
 
             activeButton.textContent = user.active ? "Desativar" : "Ativar";
             activeButton.classList.add("active-button");
+
+            if (user.id === currentUser.id) {
+                activeButton.disabled = true;
+                activeButton.textContent = "Conta atual";
+                activeButton.title = "Você não pode desativar a própria conta.";
+            }
 
             activeButton.addEventListener("click", async () => {
                 const newActiveStatus = !user.active;
