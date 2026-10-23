@@ -8,59 +8,71 @@
 </head>
 
 <body>
-    <main>
-    <div class="tickets-header">
-        <h1>Tickets</h1>
-        <div class="header-actions">
-            <a id="usersButton" href="/users.html">Usuários</a>
-            <a href="/account.html">Minha conta</a>
-            <button id="logoutButton">Sair</button>
+    <header class="app-header">
+        <div class="app-header-content">
+            <a class="app-logo" href="/tickets.html">Help Desk</a>
+
+            <nav class="app-nav">
+                <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
+                <a class="header-button" href="/account.html">Minha conta</a>
+                <button id="logoutButton">Sair</button>
+            </nav>
         </div>
-    </div>
+    </header>
+    
+    <main class="tickets-page">
 
-    <form id="ticketForm">
-        <input type="text" id="title" placeholder="Título" required>
-        <textarea id="description" placeholder="Descrição" required></textarea>
+        <div class="page-header">
+            <h1>Tickets</h1>
+            <button type="button" id="toggleTicketFormButton" class="primary-button">Criar ticket</button>
+        </div>
 
-        <select id="priority">
-            <option value="LOW">Baixa</option>
-            <option value="MEDIUM" selected>Média</option>
-            <option value="HIGH">Alta</option>
-            <option value="CRITICAL">Crítica</option>
-        </select>
+        <div class="create-ticket-section">
+            <form id="ticketForm" class="ticket-form hidden">
+                <input type="text" id="title" placeholder="Título" required>
 
-        <button type="submit">Criar ticket</button>
-    </form>
+                <textarea id="description" placeholder="Descrição" required></textarea>
 
-    <div class="ticket-filters">
-        <input type="text" id="searchFilter" placeholder="Buscar tickets...">
+                <select id="priority" required>
+                    <option value="LOW">Baixa</option>
+                    <option value="MEDIUM" selected>Média</option>
+                    <option value="HIGH">Alta</option>
+                    <option value="CRITICAL">Crítica</option>
+                </select>
 
-        <select id="statusFilter">
-            <option value="">Todos os status</option>
-            <option value="OPEN">OPEN</option>
-            <option value="IN_PROGRESS">IN_PROGRESS</option>
-            <option value="RESOLVED">RESOLVED</option>
-            <option value="CLOSED">CLOSED</option>
-        </select>
+                <button type="submit" class="primary-button">Salvar ticket</button>
+            </form>
+        </div>
 
-        <select id="priorityFilter">
-            <option value="">Todas as prioridades</option>
-            <option value="LOW">LOW</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="HIGH">HIGH</option>
-            <option value="CRITICAL">CRITICAL</option>
-        </select>
+        <div class="ticket-filters">
+            <input type="text" id="searchFilter" placeholder="Buscar tickets...">
 
-        <select id="assigneeFilter">
-            <option value="">Todos os responsáveis</option>
-            <option value="unassigned">Sem responsável</option>
-        </select>
+            <select id="statusFilter">
+                <option value="">Todos os status</option>
+                <option value="OPEN">OPEN</option>
+                <option value="IN_PROGRESS">IN_PROGRESS</option>
+                <option value="RESOLVED">RESOLVED</option>
+                <option value="CLOSED">CLOSED</option>
+            </select>
 
-        <button type="button" id="clearFiltersButton">Limpar filtros</button>
-    </div>
+            <select id="priorityFilter">
+                <option value="">Todas as prioridades</option>
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+                <option value="CRITICAL">CRITICAL</option>
+            </select>
 
-    <div id="ticketsList"></div>
-</main>
+            <select id="assigneeFilter">
+                <option value="">Todos os responsáveis</option>
+                <option value="unassigned">Sem responsável</option>
+            </select>
+
+            <button type="button" id="clearFiltersButton">Limpar filtros</button>
+        </div>
+
+        <div id="ticketsList"></div>
+    </main>
 
     <script src="./js/tickets.js"></script>
 </body>

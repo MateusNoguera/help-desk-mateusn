@@ -1,6 +1,7 @@
 const token = localStorage.getItem("token");
 
 const ticketsList = document.getElementById("ticketsList");
+const toggleTicketFormButton = document.getElementById("toggleTicketFormButton");
 const ticketForm = document.getElementById("ticketForm");
 
 const logoutButton = document.getElementById("logoutButton");
@@ -18,6 +19,19 @@ let assignableUsers = [];
 logoutButton.addEventListener("click", () => {
     localStorage.removeItem("token");
     window.location.href = "/login.html";
+});
+
+toggleTicketFormButton.addEventListener("click", () => {
+    const formIsHidden = ticketForm.classList.contains("hidden");
+
+    if (formIsHidden) {
+        ticketForm.classList.remove("hidden");
+        toggleTicketFormButton.textContent = "Cancelar criação";
+    } else {
+        ticketForm.classList.add("hidden");
+        ticketForm.reset();
+        toggleTicketFormButton.textContent = "Criar ticket";
+    }
 });
 
 async function loadCurrentUser() {
@@ -334,7 +348,7 @@ ticketForm.addEventListener("submit", async (event) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 title,
@@ -346,16 +360,17 @@ ticketForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message);
+            alert(data.message || "Erro ao criar ticket!");
             return;
         }
 
         ticketForm.reset();
-
+        ticketForm.classList.add("hidden");
+        toggleTicketFormButton.textContent = "Criar ticket";
         await loadTickets();
     } catch (error) {
-        console.error(error);
-        alert("Erro ao criar ticket.");
+        console.error("Error creating ticket:", error);
+        alert("Erro ao criar ticket!");
     }
 });
 
