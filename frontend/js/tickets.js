@@ -5,8 +5,11 @@ const ticketForm = document.getElementById("ticketForm");
 
 const logoutButton = document.getElementById("logoutButton");
 
+const searchFilter = document.getElementById("searchFilter");
 const statusFilter = document.getElementById("statusFilter");
 const priorityFilter = document.getElementById("priorityFilter");
+const assigneeFilter = document.getElementById("assigneeFilter");
+const clearFiltersButton = document.getElementById("clearFiltersButton");
 
 let loadedTickets = [];
 let currentUser = null;
@@ -45,6 +48,11 @@ function formatDate(date) {
 
 function renderTickets(tickets) {
     ticketsList.innerHTML = "";
+
+    if (tickets.length === 0) {
+        ticketsList.textContent = "Nenhum ticket encontrado!";
+        return;
+    }
 
     tickets.forEach((ticket) => {
         const ticketElement = document.createElement("div");
@@ -364,20 +372,42 @@ async function loadAssignableUsers() {
         }
 
         assignableUsers = await response.json();
+
+        assignableUsers.forEach((user) => {
+            const option = document.createElement("option");
+
+            option.value = user.id;
+            option.textContent = `${user.name} (${user.role})`;
+
+            assigneeFilter.appendChild(option);
+        });
+
     } catch (error) {
         console.error(error);
     }
 }
 
 function applyFilters() {
+    const search = searchFilter.value.trim().toLowerCase();
     const status = statusFilter.value;
     const priority = priorityFilter.value;
+    const assignee = assigneeFilter.value;
 
     const filteredTickets = loadedTickets.filter((ticket) => {
         const matchesStatus = !status || ticket.status === status;
         const matchesPriority = !priority || ticket.priority === priority;
 
-        return matchesStatus && matchesPriority;
+        let matchesAssignee = true;
+
+        if (assignee === "unassigned") {
+            matchesAssignee = !ticket.assigned_to;
+        } else if (assignee) {
+            matchesAssignee = ticket.assigned_to === Number(assignee);
+        }
+
+        const matchesSearch = !search || ticket.title.toLowerCase().includes(search) || ticket.description.toLowerCase().includes(search);
+
+        return matchesStatus && matchesPriority && matchesAssignee && matchesSearch;
     });
 
     renderTickets(filteredTickets);
@@ -395,5 +425,16 @@ async function init() {
 
 init();
 
+searchFilter.addEventListener("input", applyFilters);
 statusFilter.addEventListener("change", applyFilters);
 priorityFilter.addEventListener("change", applyFilters);
+assigneeFilter.addEventListener("change", applyFilters);
+
+clearFiltersButton.addEventListener("click", () => {
+    statusFilter.value = "";
+    priorityFilter.value = "";
+    assigneeFilter.value = "";
+    searchFilter.value = "";
+
+    renderTickets(loadedTickets);
+});

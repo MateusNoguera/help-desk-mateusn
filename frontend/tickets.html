@@ -33,6 +33,8 @@
     </form>
 
     <div class="ticket-filters">
+        <input type="text" id="searchFilter" placeholder="Buscar tickets...">
+
         <select id="statusFilter">
             <option value="">Todos os status</option>
             <option value="OPEN">OPEN</option>
@@ -48,6 +50,13 @@
             <option value="HIGH">HIGH</option>
             <option value="CRITICAL">CRITICAL</option>
         </select>
+
+        <select id="assigneeFilter">
+            <option value="">Todos os responsáveis</option>
+            <option value="unassigned">Sem responsável</option>
+        </select>
+
+        <button type="button" id="clearFiltersButton">Limpar filtros</button>
     </div>
 
     <div id="ticketsList"></div>
