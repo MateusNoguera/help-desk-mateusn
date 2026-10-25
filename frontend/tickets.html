@@ -45,30 +45,36 @@
         </div>
 
         <div class="ticket-filters">
+            <div class="filters-header">
+                <h2>Filtros</h2>
+            </div>
+
             <input type="text" id="searchFilter" placeholder="Buscar tickets...">
 
-            <select id="statusFilter">
-                <option value="">Todos os status</option>
-                <option value="OPEN">OPEN</option>
-                <option value="IN_PROGRESS">IN_PROGRESS</option>
-                <option value="RESOLVED">RESOLVED</option>
-                <option value="CLOSED">CLOSED</option>
-            </select>
+            <div class="filters-row">
+                <select id="statusFilter">
+                    <option value="">Todos os status</option>
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="RESOLVED">RESOLVED</option>
+                    <option value="CLOSED">CLOSED</option>
+                </select>
 
-            <select id="priorityFilter">
-                <option value="">Todas as prioridades</option>
-                <option value="LOW">LOW</option>
-                <option value="MEDIUM">MEDIUM</option>
-                <option value="HIGH">HIGH</option>
-                <option value="CRITICAL">CRITICAL</option>
-            </select>
+                <select id="priorityFilter">
+                    <option value="">Todas as prioridades</option>
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                    <option value="CRITICAL">CRITICAL</option>
+                </select>
 
-            <select id="assigneeFilter">
-                <option value="">Todos os responsáveis</option>
-                <option value="unassigned">Sem responsável</option>
-            </select>
+                <select id="assigneeFilter">
+                    <option value="">Todos os responsáveis</option>
+                    <option value="unassigned">Sem responsável</option>
+                </select>
 
-            <button type="button" id="clearFiltersButton">Limpar filtros</button>
+                <button type="button" id="clearFiltersButton">Limpar filtros</button>
+            </div>
         </div>
 
         <div id="ticketsList"></div>
