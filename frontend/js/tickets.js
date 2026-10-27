@@ -73,15 +73,25 @@ function renderTickets(tickets) {
         ticketElement.classList.add("ticket-card");
 
         ticketElement.innerHTML = `
-            <h2>${ticket.title}</h2>
-            <p>${ticket.description}</p>
-            <p>Prioridade: ${ticket.priority}</p>
-            <p>Status: ${ticket.status}</p>
-            <p>Criado por: ${ticket.created_by_name || "Usuário não identificado"}</p>
-            <p>Responsável: ${ticket.assigned_to_name || "Sem responsável"}</p>
-            <p>Criado em: ${formatDate(ticket.created_at)}</p>
-            <p>Atualizado em: ${formatDate(ticket.updated_at)}</p>
+            <div class="ticket-card-header">
+                <h2>${ticket.title}</h2>
+                <span class="ticket-status">${ticket.status}</span>
+            </div>
+
+            <p class="ticket-description">${ticket.description}</p>
+
+            <div class="ticket-details">
+                <p><strong>Prioridade:</strong> ${ticket.priority}</p>
+                <p><strong>Criado por:</strong> ${ticket.created_by_name || "Usuário não identificado"}</p>
+                <p><strong>Responsável:</strong> ${ticket.assigned_to_name || "Sem responsável"}</p>
+                <p><strong>Criado em:</strong> ${formatDate(ticket.created_at)}</p>
+                <p><strong>Atualizado em:</strong> ${formatDate(ticket.updated_at)}</p>
+            </div>
+
+            <div class="ticket-actions"></div>
         `;
+
+        const ticketActions = ticketElement.querySelector(".ticket-actions");
 
         if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
 
@@ -114,7 +124,7 @@ function renderTickets(tickets) {
                     }
                 });
 
-                ticketElement.appendChild(claimButton);
+                ticketActions.appendChild(claimButton);
             }
 
             const canEdit = currentUser.role === "ADMIN" || (currentUser.role === "SUPPORT" && ticket.assigned_to === currentUser.id);
@@ -252,7 +262,7 @@ function renderTickets(tickets) {
                     });
                 });
 
-                ticketElement.appendChild(editButton);
+                ticketActions.appendChild(editButton);
                 
             }
 
@@ -291,7 +301,7 @@ function renderTickets(tickets) {
                     }
                 });
 
-                ticketElement.appendChild(deleteButton);
+                ticketActions.appendChild(deleteButton);
             }
 
         }

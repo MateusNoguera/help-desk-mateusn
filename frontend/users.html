@@ -8,10 +8,22 @@
 </head>
 
 <body>
-    <main>
-        <div class="users-header">
+    <header class="app-header">
+        <div class="app-header-content">
+            <a class="app-logo" href="/tickets.html">Help Desk</a>
+
+            <nav class="app-nav">
+                <a class="header-button" href="/tickets.html">Tickets</a>
+                <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
+                <a class="header-button" href="/account.html">Minha conta</a>
+                <button id="logoutButton">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="users-page">
+        <div class="page-header">
             <h1>Usuários</h1>
-            <a href="/tickets.html">Voltar para Tickets</a>
         </div>
 
         <div id="usersList"></div>

@@ -2,6 +2,13 @@ const token = localStorage.getItem("token");
 const usersList = document.getElementById("usersList");
 let currentUser = null;
 
+const logoutButton = document.getElementById("logoutButton");
+
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+});
+
 async function loadUsers() {
     if (!token) {
         window.location.href = "/login.html";
@@ -35,11 +42,21 @@ async function loadUsers() {
             userElement.classList.add("user-card");
 
             userElement.innerHTML = `
-                <h2>${user.name}</h2>
-                <p>${user.email}</p>
-                <p>Role: ${user.role}</p>
-                <p>Status: ${user.active ? "Ativo" : "Inativo"}</p>
+                <div class="user-card-header">
+                    <h2>${user.name}</h2>
+                    <span class="user-status">${user.active ? "ATIVO" : "INATIVO"}</span>
+                </div>
+
+                <p class="user-email">${user.email}</p>
+
+                <div class="user-details">
+                    <p><strong>Role:</strong> <span class="user-role">${user.role}</span></p>
+                </div>
+
+                <div class="user-actions"></div>
             `;
+
+            const userActions = userElement.querySelector(".user-actions");
 
             const editButton = document.createElement("button");
             editButton.textContent = "Alterar";
@@ -107,7 +124,7 @@ async function loadUsers() {
                 });
             });
 
-            userElement.appendChild(editButton);
+            userActions.appendChild(editButton);
 
             const activeButton = document.createElement("button");
 
@@ -149,7 +166,7 @@ async function loadUsers() {
                 }
             });
 
-            userElement.appendChild(activeButton);
+            userActions.appendChild(activeButton);
 
             usersList.appendChild(userElement);
         });
