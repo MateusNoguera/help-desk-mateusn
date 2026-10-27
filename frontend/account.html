@@ -9,31 +9,58 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <main class="auth-container">
-        <h1>Minha conta</h1>
+    <header class="app-header">
+        <div class="app-header-content">
+            <a class="app-logo" href="/tickets.html">Help Desk</a>
 
-        <section class="account-info">
-            <p><strong>Nome:</strong> <span id="accountName"></span></p>
-            <p><strong>Email:</strong> <span id="accountEmail"></span></p>
-            <p><strong>Role:</strong> <span id="accountRole"></span></p>
-        </section>
+            <nav class="app-nav">
+                <a class="header-button" href="/tickets.html">Tickets</a>
+                <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
+                <a class="header-button" href="/account.html">Minha conta</a>
+                <button id="logoutButton">Sair</button>
+            </nav>
+        </div>
+    </header>
 
-        <form id="nameForm">
-            <input type="text" id="newName" placeholder="Novo nome" required>
-            <button type="submit">Alterar nome</button>
-        </form>
+    <main class="account-page">
+        <div class="page-header">
+            <h1>Minha conta</h1>
+        </div>
 
-        <p id="nameMessage"></p>
+        <div class="account-content">
+            <section class="account-card">
+                <h2>Dados da conta</h2>
 
-        <form id="passwordForm">
-            <input type="password" id="currentPassword" placeholder="Senha atual" required>
-            <input type="password" id="newPassword" placeholder="Nova senha" minlength="8" required>
-            <button type="submit">Alterar senha</button>
-        </form>
+                <div class="account-info">
+                    <p><strong>Nome:</strong> <span id="accountName"></span></p>
+                    <p><strong>Email:</strong> <span id="accountEmail"></span></p>
+                    <p><strong>Role:</strong> <span id="accountRole"></span></p>
+                </div>
+            </section>
 
-        <p id="passwordMessage"></p>
+            <section class="account-card">
+                <h2>Alterar nome</h2>
 
-        <a href="/tickets.html">Voltar para Tickets</a>
+                <form id="nameForm">
+                    <input type="text" id="newName" placeholder="Novo nome" required>
+                    <button type="submit">Alterar nome</button>
+                </form>
+
+                <p id="nameMessage"></p>
+            </section>
+
+            <section class="account-card">
+                <h2>Alterar senha</h2>
+
+                <form id="passwordForm">
+                    <input type="password" id="currentPassword" placeholder="Senha atual" required>
+                    <input type="password" id="newPassword" placeholder="Nova senha" minlength="8" required>
+                    <button type="submit">Alterar senha</button>
+                </form>
+
+                <p id="passwordMessage"></p>
+            </section>
+        </div>
     </main>
 
     <script src="/js/account.js"></script>

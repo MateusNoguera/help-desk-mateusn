@@ -9,6 +9,13 @@ const accountRole = document.getElementById("accountRole");
 const nameForm = document.getElementById("nameForm");
 const nameMessage = document.getElementById("nameMessage");
 
+const logoutButton = document.getElementById("logoutButton");
+
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+});
+
 if (!token) {
     window.location.href = "/login.html";
 }
