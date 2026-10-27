@@ -575,3 +575,118 @@ body:has(.account-page) {
     margin-top: 12px;
     color: var(--muted-color);
 }
+
+.login-page {
+    width: min(460px, calc(100% - 32px));
+    max-width: none;
+    padding: 40px;
+
+    background-color: var(--card-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.login-header {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.login-header h1 {
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--muted-color);
+}
+
+.login-page form {
+    gap: 14px;
+}
+
+.login-page form button {
+    margin-top: 8px;
+}
+
+.login-footer {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    margin-top: 20px;
+
+    font-size: 14px;
+    color: var(--muted-color);
+}
+
+.login-footer a {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+.register-page {
+    width: min(460px, calc(100% - 32px));
+    max-width: none;
+    padding: 40px;
+
+    background-color: var(--card-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.register-header {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.register-header h1 {
+    margin-bottom: 0;
+}
+
+.register-page form {
+    gap: 14px;
+}
+
+.register-page form button {
+    margin-top: 8px;
+}
+
+.login-button {
+    width: 100%;
+    height: 44px;
+    margin-top: 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    color: var(--primary-color);
+
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.login-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#registerMessage {
+    margin-top: 20px;
+
+    text-align: center;
+    color: var(--muted-color);
+}
