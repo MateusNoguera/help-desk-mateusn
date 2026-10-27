@@ -690,3 +690,126 @@ body:has(.account-page) {
     text-align: center;
     color: var(--muted-color);
 }
+
+@media (max-width: 900px) {
+    .app-header-content {
+        width: calc(100% - 32px);
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .app-nav {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tickets-page,
+    .users-page,
+    .account-page {
+        width: calc(100% - 32px);
+        padding: 24px;
+    }
+
+    .filters-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #clearFiltersButton {
+        width: 100%;
+    }
+
+    .ticket-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .app-header-content {
+        width: calc(100% - 24px);
+        padding: 14px 0;
+    }
+
+    .app-logo {
+        font-size: 22px;
+    }
+
+    .app-nav {
+        gap: 8px;
+    }
+
+    .header-button,
+    #logoutButton {
+        flex: 1;
+        min-width: 120px;
+        height: 42px;
+        padding: 0 12px;
+    }
+
+    .tickets-page,
+    .users-page,
+    .account-page {
+        width: calc(100% - 24px);
+        margin: 12px auto;
+        padding: 20px;
+    }
+
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        text-align: center;
+    }
+
+    #toggleTicketFormButton {
+        width: 100%;
+    }
+
+    .ticket-card-header,
+    .user-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ticket-actions,
+    .user-actions {
+        flex-direction: column;
+    }
+
+    .ticket-actions button,
+    .user-actions button {
+        width: 100%;
+    }
+
+    .account-card {
+        padding: 20px;
+    }
+
+    .account-card button {
+        width: 100%;
+    }
+
+    .login-page,
+    .register-page {
+        width: calc(100% - 24px);
+        padding: 28px 20px;
+    }
+
+    .filters-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-row select,
+    .filters-row button {
+        width: 100%;
+    }
+
+    #clearFiltersButton {
+        width: 100%;
+    }
+}
