@@ -75,17 +75,17 @@ function renderTickets(tickets) {
         ticketElement.innerHTML = `
             <div class="ticket-card-header">
                 <h2>${ticket.title}</h2>
-                <span class="ticket-status">${ticket.status}</span>
+                <span class="ticket-status">${translateStatus(ticket.status)}</span>
             </div>
 
             <p class="ticket-description">${ticket.description}</p>
 
             <div class="ticket-details">
-                <p><strong>Prioridade:</strong> ${ticket.priority}</p>
-                <p><strong>Criado por:</strong> ${ticket.created_by_name || "Usuário não identificado"}</p>
-                <p><strong>Responsável:</strong> ${ticket.assigned_to_name || "Sem responsável"}</p>
-                <p><strong>Criado em:</strong> ${formatDate(ticket.created_at)}</p>
-                <p><strong>Atualizado em:</strong> ${formatDate(ticket.updated_at)}</p>
+                <p><strong>${t("priority")}:</strong> ${translatePriority(ticket.priority)}</p>
+                <p><strong>${t("createdBy")}:</strong> ${ticket.created_by_name || t("unidentifiedUser")}</p>
+                <p><strong>${t("assignedTo")}:</strong> ${ticket.assigned_to_name || t("noAssignee")}</p>
+                <p><strong>${t("createdAt")}:</strong> ${formatDate(ticket.created_at)}</p>
+                <p><strong>${t("updatedAt")}:</strong> ${formatDate(ticket.updated_at)}</p>
             </div>
 
             <div class="ticket-actions"></div>
@@ -98,7 +98,7 @@ function renderTickets(tickets) {
             if (currentUser.role === "SUPPORT" && ticket.status === "OPEN" && !ticket.assigned_to) {
                 const claimButton = document.createElement("button");
 
-                claimButton.textContent = "Assumir ticket";
+                claimButton.textContent = t("claim");
                 claimButton.classList.add("claim-button");
 
                 claimButton.addEventListener("click", async () => {
@@ -133,7 +133,7 @@ function renderTickets(tickets) {
                 
                 const editButton = document.createElement("button");
 
-                editButton.textContent = "Alterar";
+                editButton.textContent = t("edit");
                 editButton.classList.add("edit-button");
 
                 editButton.addEventListener("click", () => {
@@ -269,7 +269,7 @@ function renderTickets(tickets) {
             if (currentUser.role === "ADMIN") {
                 const deleteButton = document.createElement("button");
 
-                deleteButton.textContent = "Excluir";
+                deleteButton.textContent = t("delete");
                 deleteButton.classList.add("delete-button");
 
                 deleteButton.addEventListener("click", async () => {
@@ -437,6 +437,32 @@ function applyFilters() {
 
     renderTickets(filteredTickets);
 }
+
+function translateStatus(status) {
+    const statusKeys = {
+        OPEN: "statusOpen",
+        IN_PROGRESS: "statusInProgress",
+        RESOLVED: "statusResolved",
+        CLOSED: "statusClosed"
+    };
+
+    return (t(statusKeys[status]) || status).toUpperCase();
+}
+
+function translatePriority(priority) {
+    const priorityKeys = {
+        LOW: "priorityLow",
+        MEDIUM: "priorityMedium",
+        HIGH: "priorityHigh",
+        CRITICAL: "priorityCritical"
+    };
+
+    return t(priorityKeys[priority]) || priority;
+}
+
+document.addEventListener("languageChanged", () => {
+    renderTickets(loadedTickets);
+});
 
 async function init() {
     await loadCurrentUser();

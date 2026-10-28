@@ -13,7 +13,32 @@ const translations = {
         allStatuses: "Todos os status",
         allPriorities: "Todas as prioridades",
         allAssignees: "Todos os responsáveis",
-        clearFilters: "Limpar filtros"
+        clearFilters: "Limpar filtros",
+
+        priority: "Prioridade",
+        createdBy: "Criado por",
+        assignedTo: "Responsável",
+        createdAt: "Criado em",
+        updatedAt: "Atualizado em",
+
+        noAssignee: "Sem responsável",
+        unidentifiedUser: "Usuário não identificado",
+
+        edit: "Alterar",
+        delete: "Excluir",
+        claim: "Assumir",
+        save: "Salvar",
+        cancel: "Cancelar",
+
+        statusOpen: "Aberto",
+        statusInProgress: "Em andamento",
+        statusResolved: "Resolvido",
+        statusClosed: "Fechado",
+
+        priorityLow: "Baixa",
+        priorityMedium: "Média",
+        priorityHigh: "Alta",
+        priorityCritical: "Crítica"
     },
 
     en: {
@@ -30,7 +55,32 @@ const translations = {
         allStatuses: "All statuses",
         allPriorities: "All priorities",
         allAssignees: "All assignees",
-        clearFilters: "Clear filters"
+        clearFilters: "Clear filters",
+
+        priority: "Priority",
+        createdBy: "Created by",
+        assignedTo: "Assigned to",
+        createdAt: "Created at",
+        updatedAt: "Updated at",
+
+        noAssignee: "Unassigned",
+        unidentifiedUser: "Unidentified user",
+
+        edit: "Edit",
+        delete: "Delete",
+        claim: "Claim",
+        save: "Save",
+        cancel: "Cancel",
+
+        statusOpen: "Open",
+        statusInProgress: "In progress",
+        statusResolved: "Resolved",
+        statusClosed: "Closed",
+
+        priorityLow: "Low",
+        priorityMedium: "Medium",
+        priorityHigh: "High",
+        priorityCritical: "Critical"
     }
 };
 
@@ -70,7 +120,15 @@ languageOptions.forEach((option) => {
         localStorage.setItem("language", currentLanguage);
 
         translatePage();
+        document.dispatchEvent(new CustomEvent("languageChanged"));
     });
 });
 
 translatePage();
+
+function t(key) {
+    return translations[currentLanguage]?.[key] || key;
+}
+
+window.t = t;
+window.getCurrentLanguage = () => currentLanguage;
