@@ -281,6 +281,10 @@ body:has(.tickets-page) {
 .app-header {
     width: 100%;
 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
     background-color: var(--card-color);
 
     border-bottom: 1px solid var(--border-color);

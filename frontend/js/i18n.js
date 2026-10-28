@@ -3,6 +3,8 @@ const translations = {
         navTickets: "Tickets",
         navUsers: "Usuários",
         navAccount: "Minha conta",
+        themeLight: "Claro",
+        themeDark: "Escuro",
         logout: "Sair",
 
         ticketsTitle: "Tickets",
@@ -38,13 +40,32 @@ const translations = {
         priorityLow: "Baixa",
         priorityMedium: "Média",
         priorityHigh: "Alta",
-        priorityCritical: "Crítica"
+        priorityCritical: "Crítica",
+
+        noTicketsFound: "Nenhum ticket encontrado!",
+        priorityLabel: "Prioridade",
+        statusLabel: "Status",
+        assignedToLabel: "Responsável",
+        selectAssigneeRequired: "Selecione um responsável para este status.",
+        deleteTicketConfirm: "Deseja realmente excluir o ticket",
+        errorClaimTicket: "Erro ao assumir ticket!",
+        errorUpdateTicket: "Erro ao atualizar ticket.",
+        errorDeleteTicket: "Erro ao excluir ticket.",
+        errorLoadTickets: "Erro ao carregar tickets.",
+        errorCreateTicket: "Erro ao criar ticket!",
+        cancelCreation: "Cancelar criação",
+
+        ticketTitlePlaceholder: "Título",
+        ticketDescriptionPlaceholder: "Descrição",
+        saveTicket: "Salvar ticket",
     },
 
     en: {
         navTickets: "Tickets",
         navUsers: "Users",
         navAccount: "My account",
+        themeLight: "Light",
+        themeDark: "Dark",
         logout: "Logout",
 
         ticketsTitle: "Tickets",
@@ -80,7 +101,24 @@ const translations = {
         priorityLow: "Low",
         priorityMedium: "Medium",
         priorityHigh: "High",
-        priorityCritical: "Critical"
+        priorityCritical: "Critical",
+
+        noTicketsFound: "No tickets found!",
+        priorityLabel: "Priority",
+        statusLabel: "Status",
+        assignedToLabel: "Assigned to",
+        selectAssigneeRequired: "Select an assignee for this status.",
+        deleteTicketConfirm: "Do you really want to delete the ticket",
+        errorClaimTicket: "Error claiming ticket!",
+        errorUpdateTicket: "Error updating ticket.",
+        errorDeleteTicket: "Error deleting ticket.",
+        errorLoadTickets: "Error loading tickets.",
+        errorCreateTicket: "Error creating ticket!",
+        cancelCreation: "Cancel creation",
+
+        ticketTitlePlaceholder: "Title",
+        ticketDescriptionPlaceholder: "Description",
+        saveTicket: "Save ticket",
     }
 };
 

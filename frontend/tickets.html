@@ -13,18 +13,23 @@
             <a class="app-logo" href="/tickets.html">Help Desk</a>
 
             <nav class="app-nav">
-                <a class="header-button active" href="/tickets.html">Tickets</a>
-                <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
-                <a class="header-button" href="/account.html">Minha conta</a>
+                <a class="header-button active" href="/tickets.html" data-i18n="navTickets">Tickets</a>
+                <a id="usersButton" class="header-button" href="/users.html" data-i18n="navUsers">Usuários</a>
+                <a class="header-button" href="/account.html" data-i18n="navAccount">Minha conta</a>
                 <div class="language-switcher">
                     <button type="button" class="language-option active" data-language="pt-BR">PT</button>
                     <button type="button" class="language-option" data-language="en">EN</button>
                 </div>
                 <div class="theme-switcher">
-                    <button type="button" class="theme-option" data-theme-value="light">Claro</button>
-                    <button type="button" class="theme-option" data-theme-value="dark">Escuro</button>
+                    <button type="button" class="theme-option" data-theme-value="light">
+                        <span data-i18n="themeLight">Claro</span>
+                    </button>
+
+                    <button type="button" class="theme-option" data-theme-value="dark">
+                        <span data-i18n="themeDark">Escuro</span>
+                    </button>
                 </div>
-                <button id="logoutButton">Sair</button>
+                <button id="logoutButton" data-i18n="logout">Sair</button>
             </nav>
         </div>
     </header>
@@ -38,18 +43,18 @@
 
         <div class="create-ticket-section">
             <form id="ticketForm" class="ticket-form hidden">
-                <input type="text" id="title" placeholder="Título" required>
+                <input type="text" id="title" placeholder="Título" data-i18n-placeholder="ticketTitlePlaceholder" required>
 
-                <textarea id="description" placeholder="Descrição" required></textarea>
+                <textarea id="description" placeholder="Descrição" data-i18n-placeholder="ticketDescriptionPlaceholder" required></textarea>
 
                 <select id="priority" required>
-                    <option value="LOW">Baixa</option>
-                    <option value="MEDIUM" selected>Média</option>
-                    <option value="HIGH">Alta</option>
-                    <option value="CRITICAL">Crítica</option>
+                    <option value="LOW" data-i18n="priorityLow">Baixa</option>
+                    <option value="MEDIUM" data-i18n="priorityMedium">Média</option>
+                    <option value="HIGH" data-i18n="priorityHigh">Alta</option>
+                    <option value="CRITICAL" data-i18n="priorityCritical">Crítica</option>
                 </select>
 
-                <button type="submit" class="primary-button">Salvar ticket</button>
+                <button type="submit" class="primary-button" data-i18n="saveTicket">Salvar ticket</button>
             </form>
         </div>
 

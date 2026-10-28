@@ -26,11 +26,11 @@ toggleTicketFormButton.addEventListener("click", () => {
 
     if (formIsHidden) {
         ticketForm.classList.remove("hidden");
-        toggleTicketFormButton.textContent = "Cancelar criação";
+        toggleTicketFormButton.textContent = t("cancelCreation");
     } else {
         ticketForm.classList.add("hidden");
         ticketForm.reset();
-        toggleTicketFormButton.textContent = "Criar ticket";
+        toggleTicketFormButton.textContent = t("createTicket");
     }
 });
 
@@ -57,14 +57,14 @@ async function loadCurrentUser() {
 }
 
 function formatDate(date) {
-    return new Date(date).toLocaleString("pt-BR");
+    return new Date(date).toLocaleString(getCurrentLanguage());
 }
 
 function renderTickets(tickets) {
     ticketsList.innerHTML = "";
 
     if (tickets.length === 0) {
-        ticketsList.textContent = "Nenhum ticket encontrado!";
+        ticketsList.textContent = t("noTicketsFound");
         return;
     }
 
@@ -120,7 +120,7 @@ function renderTickets(tickets) {
                         await loadTickets();
                     } catch (error) {
                         console.error(error);
-                        alert("Erro ao assumir ticket!");
+                        alert(t("errorClaimTicket"));
                     }
                 });
 
@@ -141,25 +141,25 @@ function renderTickets(tickets) {
                         <h2>${ticket.title}</h2>
                         <p>${ticket.description}</p>
 
-                        <label for="priority-${ticket.id}">Prioridade</label>
+                        <label for="priority-${ticket.id}">${t("priorityLabel")}</label>
                         <select id="priority-${ticket.id}">
-                            <option value="LOW">LOW</option>
-                            <option value="MEDIUM">MEDIUM</option>
-                            <option value="HIGH">HIGH</option>
-                            <option value="CRITICAL">CRITICAL</option>
+                            <option value="LOW">${translatePriority("LOW")}</option>
+                            <option value="MEDIUM">${translatePriority("MEDIUM")}</option>
+                            <option value="HIGH">${translatePriority("HIGH")}</option>
+                            <option value="CRITICAL">${translatePriority("CRITICAL")}</option>
                         </select>
 
-                        <label for="status-${ticket.id}">Status</label>
+                        <label for="status-${ticket.id}">${t("statusLabel")}</label>
                         <select id="status-${ticket.id}"></select>
 
-                        <label for="assigned-${ticket.id}">Responsável</label>
+                        <label for="assigned-${ticket.id}">${t("assignedToLabel")}</label>
                         <select id="assigned-${ticket.id}">
-                            <option value="">Sem responsável</option>
+                            <option value="">${t("noAssignee")}</option>
                         </select>
 
                         <div class="edit-actions">
-                            <button class="save-button">Salvar</button>
-                            <button class="cancel-button">Cancelar</button>
+                            <button class="save-button">${t("save")}</button>
+                            <button class="cancel-button">${t("cancel")}</button>
                         </div>
                     `;
 
@@ -188,7 +188,7 @@ function renderTickets(tickets) {
                         const option = document.createElement("option");
 
                         option.value = status;
-                        option.textContent = status;
+                        option.textContent = translateStatus(status);
 
                         statusSelect.appendChild(option);
                     });
@@ -225,7 +225,7 @@ function renderTickets(tickets) {
                         const statusesThatRequireAssignee = ["IN_PROGRESS", "RESOLVED", "CLOSED"];
 
                         if (statusesThatRequireAssignee.includes(statusSelect.value) && !assignedSelect.value) {
-                            alert("Selecione um responsável para este status.");
+                            alert(t("selectAssigneeRequired"));
                             return;
                         }
 
@@ -253,7 +253,7 @@ function renderTickets(tickets) {
                             await loadTickets();
                         } catch (error) {
                             console.error(error);
-                            alert("Erro ao atualizar ticket.");
+                            alert(t("errorUpdateTicket"));
                         }
                     });
 
@@ -273,7 +273,7 @@ function renderTickets(tickets) {
                 deleteButton.classList.add("delete-button");
 
                 deleteButton.addEventListener("click", async () => {
-                    const confirmed = confirm(`Deseja realmente excluir o ticket "${ticket.title}"?`);
+                    const confirmed = confirm(`${t("deleteTicketConfirm")} "${ticket.title}"?`);
 
                     if (!confirmed) {
                         return;
@@ -297,7 +297,7 @@ function renderTickets(tickets) {
                         await loadTickets();
                     } catch (error) {
                         console.error(error);
-                        alert("Erro ao excluir ticket.");
+                        alert(t("errorDeleteTicket"));
                     }
                 });
 
@@ -342,7 +342,7 @@ async function loadTickets() {
 
     } catch (error) {
         console.error(error);
-        ticketsList.textContent = "Erro ao carregar tickets.";
+        ticketsList.textContent = t("errorLoadTickets");
     }
 }
 
@@ -370,13 +370,13 @@ ticketForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message || "Erro ao criar ticket!");
+            alert(data.message || t("errorCreateTicket"));
             return;
         }
 
         ticketForm.reset();
         ticketForm.classList.add("hidden");
-        toggleTicketFormButton.textContent = "Criar ticket";
+        toggleTicketFormButton.textContent = t("createTicket");
         await loadTickets();
     } catch (error) {
         console.error("Error creating ticket:", error);
@@ -462,6 +462,10 @@ function translatePriority(priority) {
 
 document.addEventListener("languageChanged", () => {
     renderTickets(loadedTickets);
+
+    if (!ticketForm.classList.contains("hidden")) {
+        toggleTicketFormButton.textContent = t("cancelCreation");
+    }
 });
 
 async function init() {
