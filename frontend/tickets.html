@@ -16,10 +16,14 @@
                 <a class="header-button active" href="/tickets.html">Tickets</a>
                 <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
                 <a class="header-button" href="/account.html">Minha conta</a>
-                <button id="themeButton">
-                    <span id="themeIcon"></span>
-                    <span id="themeText">Tema claro</span>
-                </button>
+                <div class="language-switcher">
+                    <button type="button" class="language-option active" data-language="pt-BR">PT</button>
+                    <button type="button" class="language-option" data-language="en">EN</button>
+                </div>
+                <div class="theme-switcher">
+                    <button type="button" class="theme-option" data-theme-value="light">Claro</button>
+                    <button type="button" class="theme-option" data-theme-value="dark">Escuro</button>
+                </div>
                 <button id="logoutButton">Sair</button>
             </nav>
         </div>
@@ -28,8 +32,8 @@
     <main class="tickets-page">
 
         <div class="page-header">
-            <h1>Tickets</h1>
-            <button type="button" id="toggleTicketFormButton" class="primary-button">Criar ticket</button>
+            <h1 data-i18n="ticketsTitle">Tickets</h1>
+            <button type="button" id="toggleTicketFormButton" class="primary-button" data-i18n="createTicket"> Criar ticket </button>
         </div>
 
         <div class="create-ticket-section">
@@ -51,14 +55,14 @@
 
         <div class="ticket-filters">
             <div class="filters-header">
-                <h2>Filtros</h2>
+                <h2 data-i18n="filtersTitle">Filtros</h2>
             </div>
 
-            <input type="text" id="searchFilter" placeholder="Buscar tickets...">
+            <input type="text" id="searchFilter" placeholder="Buscar tickets..." data-i18n-placeholder="searchTickets">
 
             <div class="filters-row">
                 <select id="statusFilter">
-                    <option value="">Todos os status</option>
+                    <option value="" data-i18n="allStatuses">Todos os status</option>
                     <option value="OPEN">OPEN</option>
                     <option value="IN_PROGRESS">IN_PROGRESS</option>
                     <option value="RESOLVED">RESOLVED</option>
@@ -66,7 +70,7 @@
                 </select>
 
                 <select id="priorityFilter">
-                    <option value="">Todas as prioridades</option>
+                    <option value="" data-i18n="allPriorities">Todas as prioridades</option>
                     <option value="LOW">LOW</option>
                     <option value="MEDIUM">MEDIUM</option>
                     <option value="HIGH">HIGH</option>
@@ -74,11 +78,11 @@
                 </select>
 
                 <select id="assigneeFilter">
-                    <option value="">Todos os responsáveis</option>
+                    <option value="" data-i18n="allAssignees">Todos os responsáveis</option>
                     <option value="unassigned">Sem responsável</option>
                 </select>
 
-                <button type="button" id="clearFiltersButton">Limpar filtros</button>
+                <button id="clearFiltersButton" data-i18n="clearFilters">Limpar filtros</button>
             </div>
         </div>
 
@@ -86,6 +90,7 @@
     </main>
 
     <script src="./js/theme.js"></script>
+    <script src="./js/i18n.js"></script>
     <script src="./js/tickets.js"></script>
 </body>
 </html>

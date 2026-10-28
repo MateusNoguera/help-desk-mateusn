@@ -229,6 +229,7 @@ body:has(.tickets-page) {
 }
 
 .header-button,
+#languageButton
 #themeButton,
 #logoutButton {
     height: 44px;
@@ -254,6 +255,7 @@ body:has(.tickets-page) {
 }
 
 .header-button:hover,
+#languageButton:hover,
 #themeButton:hover,
 #logoutButton:hover {
     background-color: var(--primary-hover);
@@ -867,4 +869,52 @@ body:has(.register-page) #themeButton {
     box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.35);
     cursor: default;
     pointer-events: none;
+}
+
+.language-switcher,
+.theme-switcher {
+    height: 44px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: stretch;
+
+    background-color: var(--input-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.language-option,
+.theme-option {
+    height: 100%;
+    margin: 0;
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    background-color: transparent;
+    color: var(--muted-color);
+
+    border: none;
+    border-radius: 0;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.language-option:hover,
+.theme-option:hover {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.language-option.active,
+.theme-option.active {
+    background-color: var(--primary-color);
+    color: white;
 }
