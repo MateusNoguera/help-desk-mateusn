@@ -13,9 +13,13 @@
             <a class="app-logo" href="/tickets.html">Help Desk</a>
 
             <nav class="app-nav">
-                <a class="header-button" href="/tickets.html">Tickets</a>
+                <a class="header-button active" href="/tickets.html">Tickets</a>
                 <a id="usersButton" class="header-button" href="/users.html">Usuários</a>
                 <a class="header-button" href="/account.html">Minha conta</a>
+                <button id="themeButton">
+                    <span id="themeIcon"></span>
+                    <span id="themeText">Tema claro</span>
+                </button>
                 <button id="logoutButton">Sair</button>
             </nav>
         </div>
@@ -81,6 +85,7 @@
         <div id="ticketsList"></div>
     </main>
 
+    <script src="./js/theme.js"></script>
     <script src="./js/tickets.js"></script>
 </body>
 </html>

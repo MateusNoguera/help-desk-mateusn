@@ -12,6 +12,20 @@
     --primary-hover: #2563eb;
 }
 
+[data-theme="light"] {
+    --bg-color: #f1f5f9;
+    --card-color: #ffffff;
+    --input-color: #f8fafc;
+
+    --text-color: #0f172a;
+    --muted-color: #64748b;
+
+    --border-color: #cbd5e1;
+
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -215,6 +229,7 @@ body:has(.tickets-page) {
 }
 
 .header-button,
+#themeButton,
 #logoutButton {
     height: 44px;
     padding: 0 18px;
@@ -239,6 +254,7 @@ body:has(.tickets-page) {
 }
 
 .header-button:hover,
+#themeButton:hover,
 #logoutButton:hover {
     background-color: var(--primary-hover);
 }
@@ -596,10 +612,6 @@ body:has(.account-page) {
     margin-bottom: 8px;
 }
 
-.login-header p {
-    color: var(--muted-color);
-}
-
 .login-page form {
     gap: 14px;
 }
@@ -812,4 +824,47 @@ body:has(.account-page) {
     #clearFiltersButton {
         width: 100%;
     }
+}
+
+#themeButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#themeIcon {
+    width: 18px;
+    height: 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#themeIcon svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+body:has(.login-page) #themeButton,
+body:has(.register-page) #themeButton {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+
+    margin: 0;
+    z-index: 10;
+}
+
+.header-button.active {
+    background-color: var(--primary-hover);
+    box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.35);
+    cursor: default;
+    pointer-events: none;
 }
