@@ -229,8 +229,6 @@ body:has(.tickets-page) {
 }
 
 .header-button,
-#languageButton
-#themeButton,
 #logoutButton {
     height: 44px;
     padding: 0 18px;
@@ -255,8 +253,6 @@ body:has(.tickets-page) {
 }
 
 .header-button:hover,
-#languageButton:hover,
-#themeButton:hover,
 #logoutButton:hover {
     background-color: var(--primary-hover);
 }
@@ -830,42 +826,6 @@ body:has(.account-page) {
     #clearFiltersButton {
         width: 100%;
     }
-}
-
-#themeButton {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#themeIcon {
-    width: 18px;
-    height: 18px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#themeIcon svg {
-    width: 100%;
-    height: 100%;
-
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-body:has(.login-page) #themeButton,
-body:has(.register-page) #themeButton {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-
-    margin: 0;
-    z-index: 10;
 }
 
 .header-button.active {

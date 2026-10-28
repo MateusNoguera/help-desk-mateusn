@@ -380,7 +380,7 @@ ticketForm.addEventListener("submit", async (event) => {
         await loadTickets();
     } catch (error) {
         console.error("Error creating ticket:", error);
-        alert("Erro ao criar ticket!");
+        alert(t("errorCreateTicket"));
     }
 });
 
