@@ -29,7 +29,7 @@ async function loadUsers() {
         }
 
         if (response.status === 403) {
-            usersList.textContent = "Você não tem permissão para acessar esta página.";
+            usersList.textContent = t("noPermissionUsers");
             return;
         }
 
@@ -44,13 +44,13 @@ async function loadUsers() {
             userElement.innerHTML = `
                 <div class="user-card-header">
                     <h2>${user.name}</h2>
-                    <span class="user-status">${user.active ? "ATIVO" : "INATIVO"}</span>
+                    <span class="user-status">${user.active ? t("active") : t("inactive")}</span>
                 </div>
 
                 <p class="user-email">${user.email}</p>
 
                 <div class="user-details">
-                    <p><strong>Role:</strong> <span class="user-role">${user.role}</span></p>
+                    <p><strong>${t("role")}:</strong> <span class="user-role">${translateRole(user.role)}</span></p>
                 </div>
 
                 <div class="user-actions"></div>
@@ -59,13 +59,13 @@ async function loadUsers() {
             const userActions = userElement.querySelector(".user-actions");
 
             const editButton = document.createElement("button");
-            editButton.textContent = "Alterar";
+            editButton.textContent = t("change");
             editButton.classList.add("edit-button");
 
             if (user.id === currentUser.id) {
                 editButton.disabled = true;
-                editButton.textContent = "Role atual";
-                editButton.title = "Você não pode alterar a própria role!";
+                editButton.textContent = t("currentRole");
+                editButton.title = t("cannotChangeOwnRole");
             }
 
             editButton.addEventListener("click", () => {
@@ -73,16 +73,16 @@ async function loadUsers() {
                     <h2>${user.name}</h2>
                     <p>${user.email}</p>
 
-                    <label for="role-${user.id}">Role</label>
+                    <label for="role-${user.id}">${t("role")}</label>
                     <select id="role-${user.id}">
-                        <option value="EMPLOYEE">EMPLOYEE</option>
-                        <option value="SUPPORT">SUPPORT</option>
-                        <option value="ADMIN">ADMIN</option>
+                        <option value="EMPLOYEE">${translateRole("EMPLOYEE")}</option>
+                        <option value="SUPPORT">${translateRole("SUPPORT")}</option>
+                        <option value="ADMIN">${translateRole("ADMIN")}</option>
                     </select>
 
                     <div class="edit-actions">
-                        <button class="save-button">Salvar</button>
-                        <button class="cancel-button">Cancelar</button>
+                        <button class="save-button">${t("save")}</button>
+                        <button class="cancel-button">${t("cancel")}</button>
                     </div>
                 `;
 
@@ -115,7 +115,7 @@ async function loadUsers() {
                         await loadUsers();
                     } catch (error) {
                         console.error(error);
-                        alert("Erro ao atualizar usuário.");
+                        alert(t("errorUpdateUser"));
                     }
                 });
 
@@ -128,13 +128,13 @@ async function loadUsers() {
 
             const activeButton = document.createElement("button");
 
-            activeButton.textContent = user.active ? "Desativar" : "Ativar";
+            activeButton.textContent = user.active ? t("deactivate") : t("activate");
             activeButton.classList.add("active-button");
 
             if (user.id === currentUser.id) {
                 activeButton.disabled = true;
-                activeButton.textContent = "Conta atual";
-                activeButton.title = "Você não pode desativar a própria conta.";
+                activeButton.textContent = t("currentAccount");
+                activeButton.title = t("cannotDeactivateOwnAccount");
             }
 
             activeButton.addEventListener("click", async () => {
@@ -162,7 +162,7 @@ async function loadUsers() {
                     await loadUsers();
                 } catch (error) {
                     console.error(error);
-                    alert("Erro ao alterar status do usuário.");
+                    alert(t("errorChangeUserStatus"));
                 }
             });
 
@@ -172,7 +172,7 @@ async function loadUsers() {
         });
     } catch (error) {
         console.error(error);
-        usersList.textContent = "Erro ao carregar usuários.";
+        usersList.textContent = t("errorLoadUsers");
     }
 }
 
@@ -203,6 +203,20 @@ async function loadCurrentUser() {
         console.error(error);
     }
 }
+
+function translateRole(role) {
+    const roleKeys = {
+        EMPLOYEE: "roleEmployee",
+        SUPPORT: "roleSupport",
+        ADMIN: "roleAdmin"
+    };
+
+    return t(roleKeys[role]) || role;
+}
+
+document.addEventListener("languageChanged", () => {
+    loadUsers();
+});
 
 async function init() {
     await loadCurrentUser();

@@ -13,27 +13,37 @@
             <a class="app-logo" href="/tickets.html">Help Desk</a>
 
             <nav class="app-nav">
-                <a class="header-button" href="/tickets.html">Tickets</a>
-                <a id="usersButton" class="header-button active" href="/users.html">Usuários</a>
-                <a class="header-button" href="/account.html">Minha conta</a>
-                <button id="themeButton">
-                    <span id="themeIcon"></span>
-                    <span id="themeText">Tema claro</span>
-                </button>
-                <button id="logoutButton">Sair</button>
+                <a class="header-button" href="/tickets.html" data-i18n="navTickets">Tickets</a>
+                <a id="usersButton" class="header-button active" href="/users.html" data-i18n="navUsers">Usuários</a>
+                <a class="header-button" href="/account.html" data-i18n="navAccount">Minha conta</a>
+                <div class="language-switcher">
+                    <button type="button" class="language-option active" data-language="pt-BR">PT</button>
+                    <button type="button" class="language-option" data-language="en">EN</button>
+                </div>
+                <div class="theme-switcher">
+                    <button type="button" class="theme-option" data-theme-value="light">
+                        <span data-i18n="themeLight">Claro</span>
+                    </button>
+
+                    <button type="button" class="theme-option" data-theme-value="dark">
+                        <span data-i18n="themeDark">Escuro</span>
+                    </button>
+                </div>
+                <button id="logoutButton" data-i18n="logout">Sair</button>
             </nav>
         </div>
     </header>
 
     <main class="users-page">
         <div class="page-header">
-            <h1>Usuários</h1>
+            <h1 data-i18n="usersTitle">Usuários</h1>
         </div>
 
         <div id="usersList"></div>
     </main>
 
     <script src="./js/theme.js"></script>
+    <script src="./js/i18n.js"></script>
     <script src="./js/users.js"></script>
 </body>
 </html>

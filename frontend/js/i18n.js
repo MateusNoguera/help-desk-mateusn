@@ -58,6 +58,26 @@ const translations = {
         ticketTitlePlaceholder: "Título",
         ticketDescriptionPlaceholder: "Descrição",
         saveTicket: "Salvar ticket",
+
+        usersTitle: "Usuários",
+        role: "Cargo",
+        status: "Status",
+        active: "ATIVO",
+        inactive: "INATIVO",
+        change: "Alterar",
+        currentRole: "Cargo atual",
+        currentAccount: "Conta atual",
+        activate: "Ativar",
+        deactivate: "Desativar",
+        noPermissionUsers: "Você não tem permissão para acessar esta página.",
+        errorLoadUsers: "Erro ao carregar usuários.",
+        errorUpdateUser: "Erro ao atualizar usuário.",
+        errorChangeUserStatus: "Erro ao alterar status do usuário.",
+        roleEmployee: "Funcionário",
+        roleSupport: "Suporte",
+        roleAdmin: "Administrador",
+        cannotChangeOwnRole: "Você não pode alterar o próprio cargo!",
+        cannotDeactivateOwnAccount: "Você não pode desativar a própria conta."
     },
 
     en: {
@@ -119,6 +139,26 @@ const translations = {
         ticketTitlePlaceholder: "Title",
         ticketDescriptionPlaceholder: "Description",
         saveTicket: "Save ticket",
+
+        usersTitle: "Users",
+        role: "Role",
+        status: "Status",
+        active: "ACTIVE",
+        inactive: "INACTIVE",
+        change: "Edit",
+        currentRole: "Current role",
+        currentAccount: "Current account",
+        activate: "Activate",
+        deactivate: "Deactivate",
+        noPermissionUsers: "You do not have permission to access this page.",
+        errorLoadUsers: "Error loading users.",
+        errorUpdateUser: "Error updating user.",
+        errorChangeUserStatus: "Error changing user status.",
+        roleEmployee: "Employee",
+        roleSupport: "Support",
+        roleAdmin: "Admin",
+        cannotChangeOwnRole: "You cannot change your own role!",
+        cannotDeactivateOwnAccount: "You cannot deactivate your own account."
     }
 };
 

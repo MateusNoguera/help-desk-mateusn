@@ -200,7 +200,7 @@ function renderTickets(tickets) {
                             const option = document.createElement("option");
 
                             option.value = user.id;
-                            option.textContent = `${user.name} (${user.role})`;
+                            option.textContent = `${user.name} (${translateRole(user.role)})`;
 
                             assignedSelect.appendChild(option);
                         });
@@ -402,7 +402,7 @@ async function loadAssignableUsers() {
             const option = document.createElement("option");
 
             option.value = user.id;
-            option.textContent = `${user.name} (${user.role})`;
+            option.textContent = `${user.name} (${translateRole(user.role)})`;
 
             assigneeFilter.appendChild(option);
         });
@@ -458,6 +458,16 @@ function translatePriority(priority) {
     };
 
     return t(priorityKeys[priority]) || priority;
+}
+
+function translateRole(role) {
+    const roleKeys = {
+        EMPLOYEE: "roleEmployee",
+        SUPPORT: "roleSupport",
+        ADMIN: "roleAdmin"
+    };
+
+    return t(roleKeys[role]) || role;
 }
 
 document.addEventListener("languageChanged", () => {
