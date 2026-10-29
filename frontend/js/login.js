@@ -29,9 +29,8 @@ form.addEventListener("submit", async (event) => {
         localStorage.setItem("token", data.token);
         window.location.href = "/tickets.html";
 
-        message.textContent = "Login realizado com sucesso!";
     } catch (error) {
         console.error(error);
-        message.textContent = "Erro ao conectar com o servidor.";
+        message.textContent = t("serverConnectionError");
     }
 });

@@ -92,7 +92,14 @@ const translations = {
         nameChangedSuccess: "Nome alterado com sucesso!",
         passwordChangedSuccess: "Senha alterada com sucesso!",
         errorChangeName: "Erro ao alterar nome!",
-        errorChangePassword: "Erro ao alterar senha!"
+        errorChangePassword: "Erro ao alterar senha!",
+
+        password: "Senha",
+        login: "Entrar",
+        noAccount: "Não possui uma conta?",
+        createAccount: "Criar conta",
+        loginSuccess: "Login realizado com sucesso!",
+        serverConnectionError: "Erro ao conectar com o servidor."
     },
 
     en: {
@@ -188,7 +195,14 @@ const translations = {
         nameChangedSuccess: "Name changed successfully!",
         passwordChangedSuccess: "Password changed successfully!",
         errorChangeName: "Error changing name!",
-        errorChangePassword: "Error changing password!"
+        errorChangePassword: "Error changing password!",
+
+        password: "Password",
+        login: "Login",
+        noAccount: "Don't have an account?",
+        createAccount: "Create account",
+        loginSuccess: "Login successful!",
+        serverConnectionError: "Error connecting to the server."
     }
 };
 
