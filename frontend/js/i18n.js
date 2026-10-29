@@ -77,7 +77,22 @@ const translations = {
         roleSupport: "Suporte",
         roleAdmin: "Administrador",
         cannotChangeOwnRole: "Você não pode alterar o próprio cargo!",
-        cannotDeactivateOwnAccount: "Você não pode desativar a própria conta."
+        cannotDeactivateOwnAccount: "Você não pode desativar a própria conta.",
+
+        accountTitle: "Minha conta",
+        accountData: "Dados da conta",
+        name: "Nome",
+        email: "E-mail",
+        role: "Cargo",
+        changeName: "Alterar nome",
+        newNamePlaceholder: "Novo nome",
+        changePassword: "Alterar senha",
+        currentPasswordPlaceholder: "Senha atual",
+        newPasswordPlaceholder: "Nova senha",
+        nameChangedSuccess: "Nome alterado com sucesso!",
+        passwordChangedSuccess: "Senha alterada com sucesso!",
+        errorChangeName: "Erro ao alterar nome!",
+        errorChangePassword: "Erro ao alterar senha!"
     },
 
     en: {
@@ -158,7 +173,22 @@ const translations = {
         roleSupport: "Support",
         roleAdmin: "Admin",
         cannotChangeOwnRole: "You cannot change your own role!",
-        cannotDeactivateOwnAccount: "You cannot deactivate your own account."
+        cannotDeactivateOwnAccount: "You cannot deactivate your own account.",
+
+        accountTitle: "My account",
+        accountData: "Account details",
+        name: "Name",
+        email: "Email",
+        role: "Role",
+        changeName: "Change name",
+        newNamePlaceholder: "New name",
+        changePassword: "Change password",
+        currentPasswordPlaceholder: "Current password",
+        newPasswordPlaceholder: "New password",
+        nameChangedSuccess: "Name changed successfully!",
+        passwordChangedSuccess: "Password changed successfully!",
+        errorChangeName: "Error changing name!",
+        errorChangePassword: "Error changing password!"
     }
 };
 

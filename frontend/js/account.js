@@ -46,11 +46,11 @@ passwordForm.addEventListener("submit", async (event) => {
             return;
         }
 
-        passwordMessage.textContent = "Senha alterada com sucesso!";
+        passwordMessage.textContent = t("passwordChangedSuccess");
         passwordForm.reset();
     } catch (error) {
         console.error(error);
-        passwordMessage.textContent = "Erro ao alterar senha!";
+        passwordMessage.textContent = t("errorChangePassword");
     }
 });
 
@@ -79,12 +79,26 @@ nameForm.addEventListener("submit", async (event) => {
         }
 
         accountName.textContent = data.user.name;
-        nameMessage.textContent = "Nome alterado com sucesso!";
+        nameMessage.textContent = t("nameChangedSuccess");
         nameForm.reset();
     } catch (error) {
         console.error(error);
-        nameMessage.textContent = "Erro ao alterar nome!";
+        nameMessage.textContent = t("errorChangeName");
     }
+});
+
+function translateRole(role) {
+    const roleKeys = {
+        EMPLOYEE: "roleEmployee",
+        SUPPORT: "roleSupport",
+        ADMIN: "roleAdmin"
+    };
+
+    return t(roleKeys[role]) || role;
+}
+
+document.addEventListener("languageChanged", () => {
+    loadAccount();
 });
 
 async function loadAccount() {
@@ -105,7 +119,7 @@ async function loadAccount() {
 
         accountName.textContent = data.user.name || "Não informado";
         accountEmail.textContent = data.user.email;
-        accountRole.textContent = data.user.role;
+        accountRole.textContent = translateRole(data.user.role);
     } catch (error) {
         console.error(error);
     }
