@@ -28,13 +28,13 @@ registerForm.addEventListener("submit", async (event) => {
             return;
         }
 
-        registerMessage.textContent = "Usuário criado com sucesso!";
+        registerMessage.textContent = t("registerSuccess");
 
         setTimeout(() => {
             window.location.href = "/login.html";
         }, 1000);
     } catch (error) {
         console.error(error);
-        registerMessage.textContent = "Erro ao criar usuário!";
+        registerMessage.textContent = t("errorRegisterUser");
     }
 });

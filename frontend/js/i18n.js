@@ -99,7 +99,13 @@ const translations = {
         noAccount: "Não possui uma conta?",
         createAccount: "Criar conta",
         loginSuccess: "Login realizado com sucesso!",
-        serverConnectionError: "Erro ao conectar com o servidor."
+        serverConnectionError: "Erro ao conectar com o servidor.",
+
+        registerTitle: "Criar conta",
+        register: "Cadastrar",
+        backToLogin: "Voltar para o login",
+        registerSuccess: "Usuário criado com sucesso!",
+        errorRegisterUser: "Erro ao criar usuário!"
     },
 
     en: {
@@ -202,7 +208,13 @@ const translations = {
         noAccount: "Don't have an account?",
         createAccount: "Create account",
         loginSuccess: "Login successful!",
-        serverConnectionError: "Error connecting to the server."
+        serverConnectionError: "Error connecting to the server.",
+
+        registerTitle: "Create account",
+        register: "Register",
+        backToLogin: "Back to login",
+        registerSuccess: "User created successfully!",
+        errorRegisterUser: "Error creating user!"
     }
 };
 

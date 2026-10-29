@@ -7,35 +7,48 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <button id="themeButton">
-        <span id="themeIcon"></span>
-        <span id="themeText">Tema claro</span>
-    </button>
+    <div class="auth-preferences">
+        <div class="language-switcher">
+            <button type="button" class="language-option active" data-language="pt-BR">PT</button>
+            <button type="button" class="language-option" data-language="en">EN</button>
+        </div>
+
+        <div class="theme-switcher">
+            <button type="button" class="theme-option" data-theme-value="light">
+                <span data-i18n="themeLight">Claro</span>
+            </button>
+
+            <button type="button" class="theme-option" data-theme-value="dark">
+                <span data-i18n="themeDark">Escuro</span>
+            </button>
+        </div>
+    </div>
     
     <main class="register-page">
         <div class="register-header">
-            <h1>Criar conta</h1>
+            <h1 data-i18n="registerTitle">Criar conta</h1>
         </div>
 
         <form id="registerForm">
-            <label for="name">Nome</label>
+            <label for="name" data-i18n="name">Nome</label>
             <input type="text" id="name" minlength="2" required>
 
-            <label for="email">E-mail</label>
+            <label for="email" data-i18n="email">E-mail</label>
             <input type="email" id="email" required>
 
-            <label for="password">Senha</label>
+            <label for="password" data-i18n="password">Senha</label>
             <input type="password" id="password" minlength="8" required>
 
-            <button type="submit">Cadastrar</button>
+            <button type="submit" data-i18n="register">Cadastrar</button>
         </form>
 
-        <a class="login-button" href="/login.html">Voltar para o login</a>
+        <a class="login-button" href="/login.html" data-i18n="backToLogin">Voltar para o login</a>
 
         <p id="registerMessage"></p>
     </main>
 
     <script src="./js/theme.js"></script>
+    <script src="./js/i18n.js"></script>
     <script src="/js/register.js"></script>
 </body>
 </html>
