@@ -105,7 +105,24 @@ const translations = {
         register: "Cadastrar",
         backToLogin: "Voltar para o login",
         registerSuccess: "Usuário criado com sucesso!",
-        errorRegisterUser: "Erro ao criar usuário!"
+        errorRegisterUser: "Erro ao criar usuário!",
+
+        errorTitleDescriptionRequired: "Título e descrição são obrigatórios.",
+        errorTitleDescriptionInvalidType: "Título e descrição devem ser textos válidos.",
+        errorTitleTooLong: "O título deve ter no máximo 100 caracteres.",
+        errorDescriptionTooLong: "A descrição deve ter no máximo 2000 caracteres.",
+        errorInvalidPriority: "Prioridade inválida.",
+        errorInvalidStatus: "Status inválido.",
+        errorTicketNotFound: "Ticket não encontrado.",
+        errorSupportNotAssigned: "Você só pode alterar tickets atribuídos a você.",
+        errorSupportCannotReassign: "Usuários de suporte não podem reatribuir tickets.",
+        errorInvalidStatusTransition: "Transição de status inválida.",
+        errorAssigneeRequired: "Este status exige um responsável.",
+        errorAssigneeNotFound: "Responsável não encontrado.",
+        errorAssigneeInactive: "O responsável precisa estar ativo.",
+        errorAssigneeInvalidRole: "O responsável deve ser Suporte ou Administrador.",
+        errorTicketAlreadyAssigned: "Este ticket já possui um responsável.",
+        errorTicketNotOpen: "Somente tickets abertos podem ser assumidos."
     },
 
     en: {
@@ -214,7 +231,24 @@ const translations = {
         register: "Register",
         backToLogin: "Back to login",
         registerSuccess: "User created successfully!",
-        errorRegisterUser: "Error creating user!"
+        errorRegisterUser: "Error creating user!",
+
+        errorTitleDescriptionRequired: "Title and description are required.",
+        errorTitleDescriptionInvalidType: "Title and description must be valid text.",
+        errorTitleTooLong: "Title must have at most 100 characters.",
+        errorDescriptionTooLong: "Description must have at most 2000 characters.",
+        errorInvalidPriority: "Invalid priority.",
+        errorInvalidStatus: "Invalid status.",
+        errorTicketNotFound: "Ticket not found.",
+        errorSupportNotAssigned: "You can only update tickets assigned to you.",
+        errorSupportCannotReassign: "Support users cannot reassign tickets.",
+        errorInvalidStatusTransition: "Invalid status transition.",
+        errorAssigneeRequired: "This status requires an assignee.",
+        errorAssigneeNotFound: "Assignee not found.",
+        errorAssigneeInactive: "The assignee must be active.",
+        errorAssigneeInvalidRole: "The assignee must be Support or Administrator.",
+        errorTicketAlreadyAssigned: "This ticket already has an assignee.",
+        errorTicketNotOpen: "Only open tickets can be claimed."
     }
 };
 

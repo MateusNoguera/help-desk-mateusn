@@ -21,6 +21,17 @@ logoutButton.addEventListener("click", () => {
     window.location.href = "/login.html";
 });
 
+function handleUnauthorized(response) {
+    if (response.status !== 401) {
+        return false;
+    }
+
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+
+    return true;
+}
+
 toggleTicketFormButton.addEventListener("click", () => {
     const formIsHidden = ticketForm.classList.contains("hidden");
 
@@ -42,9 +53,11 @@ async function loadCurrentUser() {
             }
         });
 
+        if (handleUnauthorized(response)) {
+            return;
+        }
+
         if (!response.ok) {
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
             return;
         }
 
@@ -110,10 +123,14 @@ function renderTickets(tickets) {
                             }
                         });
 
+                        if (handleUnauthorized(response)) {
+                            return;
+                        }
+
                         const data = await response.json();
 
                         if (!response.ok) {
-                            alert(data.message);
+                            alert(getApiErrorMessage(data, "errorClaimTicket"));
                             return;
                         }
 
@@ -213,7 +230,7 @@ function renderTickets(tickets) {
                             const option = document.createElement("option");
 
                             option.value = supportUser.id;
-                            option.textContent = `${supportUser.name} (${supportUser.role})`;
+                            option.textContent = `${supportUser.name} (${translateRole(supportUser.role)})`;
 
                             assignedSelect.appendChild(option);
                         }
@@ -243,10 +260,14 @@ function renderTickets(tickets) {
                                 })
                             });
 
+                            if (handleUnauthorized(response)) {
+                                return;
+                            }
+
                             const data = await response.json();
 
                             if (!response.ok) {
-                                alert(data.message);
+                                alert(getApiErrorMessage(data, "errorUpdateTicket"));
                                 return;
                             }
 
@@ -287,10 +308,14 @@ function renderTickets(tickets) {
                             }
                         });
 
+                        if (handleUnauthorized(response)) {
+                            return;
+                        }
+
                         const data = await response.json();
 
                         if (!response.ok) {
-                            alert(data.message);
+                            alert(getApiErrorMessage(data, "errorDeleteTicket"));
                             return;
                         }
 
@@ -324,13 +349,11 @@ async function loadTickets() {
             }
         });
 
-        if (!response.ok) {
-            if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem("token");
-                window.location.href = "/login.html";
-                return;
-            }
+        if (handleUnauthorized(response)) {
+            return;
+        }
 
+        if (!response.ok) {
             throw new Error("Erro ao carregar tickets!");
         }
 
@@ -367,10 +390,14 @@ ticketForm.addEventListener("submit", async (event) => {
             })
         });
 
+        if (handleUnauthorized(response)) {
+            return;
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message || t("errorCreateTicket"));
+            alert(getApiErrorMessage(data, "errorCreateTicket"));
             return;
         }
 
@@ -391,6 +418,10 @@ async function loadAssignableUsers() {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        if (handleUnauthorized(response)) {
+            return;
+        }
 
         if (!response.ok) {
             return;
@@ -470,6 +501,33 @@ function translateRole(role) {
     return t(roleKeys[role]) || role;
 }
 
+function getApiErrorMessage(data, fallbackKey) {
+    const errorKeys = {
+        TITLE_DESCRIPTION_REQUIRED: "errorTitleDescriptionRequired",
+        TITLE_DESCRIPTION_INVALID_TYPE: "errorTitleDescriptionInvalidType",
+        TITLE_TOO_LONG: "errorTitleTooLong",
+        DESCRIPTION_TOO_LONG: "errorDescriptionTooLong",
+        INVALID_PRIORITY: "errorInvalidPriority",
+        INVALID_STATUS: "errorInvalidStatus",
+        TICKET_NOT_FOUND: "errorTicketNotFound",
+        SUPPORT_NOT_ASSIGNED: "errorSupportNotAssigned",
+        SUPPORT_CANNOT_REASSIGN: "errorSupportCannotReassign",
+        INVALID_STATUS_TRANSITION: "errorInvalidStatusTransition",
+        ASSIGNEE_REQUIRED: "errorAssigneeRequired",
+        ASSIGNEE_NOT_FOUND: "errorAssigneeNotFound",
+        ASSIGNEE_INACTIVE: "errorAssigneeInactive",
+        ASSIGNEE_INVALID_ROLE: "errorAssigneeInvalidRole",
+        TICKET_ALREADY_ASSIGNED: "errorTicketAlreadyAssigned",
+        TICKET_NOT_OPEN: "errorTicketNotOpen"
+    };
+
+    if (data.code && errorKeys[data.code]) {
+        return t(errorKeys[data.code]);
+    }
+
+    return t(fallbackKey);
+}
+
 document.addEventListener("languageChanged", () => {
     renderTickets(loadedTickets);
 
@@ -480,6 +538,10 @@ document.addEventListener("languageChanged", () => {
 
 async function init() {
     await loadCurrentUser();
+
+    if (!currentUser) {
+        return;
+    }
 
     if (currentUser.role === "SUPPORT" || currentUser.role === "ADMIN") {
         await loadAssignableUsers();

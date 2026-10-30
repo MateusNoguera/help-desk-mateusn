@@ -142,6 +142,7 @@ export async function getAssignableUsers(req, res) {
                 SELECT id, name, email, role
                 FROM users
                 WHERE role IN ('SUPPORT', 'ADMIN')
+                AND active = true
                 ORDER BY name
             `
         );

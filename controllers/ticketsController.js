@@ -93,6 +93,7 @@ export async function getTicketsById(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "TICKET_NOT_FOUND",
                 message: "Ticket not found!"
             });
         }
@@ -112,14 +113,40 @@ export async function createTicket(req, res) {
         const { title, description, priority } = req.body;
         const userId = req.user.id;
 
-        if (!title || !description) {
+        if (typeof title !== "string" || typeof description !== "string") {
             return res.status(400).json({
+                code: "TITLE_DESCRIPTION_INVALID_TYPE",
+                message: "Title and description must be strings!"
+            });
+        }
+
+        const trimmedTitle = title?.trim();
+        const trimmedDescription = description?.trim();
+
+        if (!trimmedTitle || !trimmedDescription) {
+            return res.status(400).json({
+                code: "TITLE_DESCRIPTION_REQUIRED",
                 message: "Title and description are required!"
+            });
+        }
+
+        if (trimmedTitle.length > 100) {
+            return res.status(400).json({
+                code: "TITLE_TOO_LONG",
+                message: "Title must have at most 100 characters!"
+            });
+        }
+
+        if (trimmedDescription.length > 2000) {
+            return res.status(400).json({
+                code: "DESCRIPTION_TOO_LONG",
+                message: "Description must have at most 2000 characters!"
             });
         }
 
         if (priority && !validPriorities.includes(priority)) {
             return res.status(400).json({
+                code: "INVALID_PRIORITY",
                 message: "Invalid priority!"
             });
         }
@@ -130,7 +157,7 @@ export async function createTicket(req, res) {
                 VALUES ($1, $2, $3, $4)
                 RETURNING *
             `,
-            [title, description, priority || "MEDIUM", userId]
+            [trimmedTitle, trimmedDescription, priority || "MEDIUM", userId]
         );
 
         return res.status(201).json({
@@ -153,12 +180,14 @@ export async function updateTicket(req, res) {
 
         if (!validStatuses.includes(status)) {
             return res.status(400).json({
+                code: "INVALID_STATUS",
                 message: "Invalid status!"
             });
         }
 
         if (!validPriorities.includes(priority)) {
             return res.status(400).json({
+                code: "INVALID_PRIORITY",
                 message: "Invalid priority!"
             });
         }
@@ -168,23 +197,26 @@ export async function updateTicket(req, res) {
             [id]
         );
 
+        if (currentTicket.rows.length === 0) {
+            return res.status(404).json({
+                code: "TICKET_NOT_FOUND",
+                message: "Ticket not found!"
+            });
+        }
+
         const ticket = currentTicket.rows[0];
 
         if (req.user.role === "SUPPORT" && ticket.assigned_to !== req.user.id) {
             return res.status(403).json({
+                code: "SUPPORT_NOT_ASSIGNED",
                 message: "You can only update tickets assigned to you!"
             });
         }
 
         if (req.user.role === "SUPPORT" && assigned_to !== req.user.id && assigned_to !== null) {
             return res.status(403).json({
+                code: "SUPPORT_CANNOT_REASSIGN",
                 message: "Support users cannot reassign tickets!"
-            });
-        }
-
-        if (currentTicket.rows.length === 0) {
-            return res.status(404).json({
-                message: "Ticket not found!"
             });
         }
 
@@ -202,30 +234,41 @@ export async function updateTicket(req, res) {
             !allowedTransitions[currentStatus].includes(status)
         ) {
             return res.status(400).json({
+                code: "INVALID_STATUS_TRANSITION",
                 message: `Invalid status transition from ${currentStatus} to ${status}!`
             });
         }
 
         if (["IN_PROGRESS", "RESOLVED", "CLOSED"].includes(status) && !assigned_to) {
             return res.status(400).json({
+                code: "ASSIGNEE_REQUIRED",
                 message: "Ticket must have an assigned user for this status"
             });
         }
 
         if (assigned_to) {
             const userResult = await pool.query(
-                "SELECT id, role FROM users WHERE id = $1",
+                "SELECT id, role, active FROM users WHERE id = $1",
                 [assigned_to]
             );
 
             if (userResult.rows.length === 0) {
                 return res.status(404).json({
+                    code: "ASSIGNEE_NOT_FOUND",
                     message: "Assigned user not found!"
+                });
+            }
+
+            if (!userResult.rows[0].active) {
+                return res.status(400).json({
+                    code: "ASSIGNEE_INACTIVE",
+                    message: "Assigned user must be active!"
                 });
             }
 
             if (!["SUPPORT", "ADMIN"].includes(userResult.rows[0].role)) {
                 return res.status(400).json({
+                    code: "ASSIGNEE_INVALID_ROLE",
                     message: "Assigned user must be SUPPORT or ADMIN!"
                 });
             }
@@ -269,6 +312,7 @@ export async function deleteTicket(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "TICKET_NOT_FOUND",
                 message: "Ticket not found!"
             });
         }
@@ -298,6 +342,7 @@ export async function claimTicket(req, res) {
 
         if (ticketResult.rows.length === 0) {
             return res.status(404).json({
+                code: "TICKET_NOT_FOUND",
                 message: "Ticket not found!"
             });
         }
@@ -306,12 +351,14 @@ export async function claimTicket(req, res) {
 
         if (ticket.assigned_to) {
             return res.status(400).json({
+                code: "TICKET_ALREADY_ASSIGNED",
                 message: "Ticket already has an assigned user!"
             });
         }
 
         if (ticket.status !== "OPEN") {
             return res.status(400).json({
+                code: "TICKET_NOT_OPEN",
                 message: "Only open tickets can be claimed!"
             });
         }

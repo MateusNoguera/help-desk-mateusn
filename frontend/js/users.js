@@ -9,6 +9,17 @@ logoutButton.addEventListener("click", () => {
     window.location.href = "/login.html";
 });
 
+function handleUnauthorized(response) {
+    if (response.status !== 401) {
+        return false;
+    }
+
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+
+    return true;
+}
+
 async function loadUsers() {
     if (!token) {
         window.location.href = "/login.html";
@@ -22,9 +33,7 @@ async function loadUsers() {
             }
         });
 
-        if (response.status === 401) {
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
+        if (handleUnauthorized(response)) {
             return;
         }
 
@@ -105,6 +114,10 @@ async function loadUsers() {
                             })
                         });
 
+                        if (handleUnauthorized(response)) {
+                            return;
+                        }
+
                         const data = await response.json();
 
                         if (!response.ok) {
@@ -152,6 +165,10 @@ async function loadUsers() {
                         })
                     });
 
+                    if (handleUnauthorized(response)) {
+                        return;
+                    }
+
                     const data = await response.json();
 
                     if (!response.ok) {
@@ -186,9 +203,11 @@ async function loadCurrentUser() {
             }
         });
 
+        if (handleUnauthorized(response)) {
+            return;
+        }
+
         if (!response.ok) {
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
             return;
         }
 

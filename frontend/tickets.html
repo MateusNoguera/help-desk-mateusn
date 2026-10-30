@@ -43,9 +43,9 @@
 
         <div class="create-ticket-section">
             <form id="ticketForm" class="ticket-form hidden">
-                <input type="text" id="title" placeholder="Título" data-i18n-placeholder="ticketTitlePlaceholder" required>
+                <input type="text" id="title" placeholder="Título" maxlength="100" data-i18n-placeholder="ticketTitlePlaceholder" required>
 
-                <textarea id="description" placeholder="Descrição" data-i18n-placeholder="ticketDescriptionPlaceholder" required></textarea>
+                <textarea id="description" placeholder="Descrição" maxlength="2000" data-i18n-placeholder="ticketDescriptionPlaceholder" required></textarea>
 
                 <select id="priority" required>
                     <option value="LOW" data-i18n="priorityLow">Baixa</option>

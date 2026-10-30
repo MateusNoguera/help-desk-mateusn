@@ -20,6 +20,17 @@ if (!token) {
     window.location.href = "/login.html";
 }
 
+function handleUnauthorized(response) {
+    if (response.status !== 401) {
+        return false;
+    }
+
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+
+    return true;
+}
+
 passwordForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -38,6 +49,10 @@ passwordForm.addEventListener("submit", async (event) => {
                 newPassword
             })
         });
+
+        if (handleUnauthorized(response)) {
+            return;
+        }
 
         const data = await response.json();
 
@@ -70,6 +85,10 @@ nameForm.addEventListener("submit", async (event) => {
                 name
             })
         });
+
+        if (handleUnauthorized(response)) {
+            return;
+        }
 
         const data = await response.json();
 
@@ -109,9 +128,11 @@ async function loadAccount() {
             }
         });
 
+        if (handleUnauthorized(response)) {
+            return;
+        }
+
         if (!response.ok) {
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
             return;
         }
 
