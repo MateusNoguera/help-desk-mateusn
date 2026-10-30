@@ -122,7 +122,21 @@ const translations = {
         errorAssigneeInactive: "O responsável precisa estar ativo.",
         errorAssigneeInvalidRole: "O responsável deve ser Suporte ou Administrador.",
         errorTicketAlreadyAssigned: "Este ticket já possui um responsável.",
-        errorTicketNotOpen: "Somente tickets abertos podem ser assumidos."
+        errorTicketNotOpen: "Somente tickets abertos podem ser assumidos.",
+
+        errorCannotChangeOwnRole: "Você não pode alterar o próprio cargo.",
+        errorRoleRequired: "O cargo é obrigatório.",
+        errorInvalidRole: "Cargo inválido.",
+        errorUserNotFound: "Usuário não encontrado.",
+        errorCannotDeactivateOwnAccount: "Você não pode desativar a própria conta.",
+        errorInvalidActiveValue: "O status da conta deve ser ativo ou inativo.",
+
+        errorNameRequired: "O nome é obrigatório.",
+        errorPasswordsRequired: "A senha atual e a nova senha são obrigatórias.",
+        errorPasswordsMustDiffer: "A nova senha deve ser diferente da senha atual.",
+        errorNewPasswordTooShort: "A nova senha deve ter pelo menos 8 caracteres.",
+        errorCurrentPasswordIncorrect: "A senha atual está incorreta.",
+        notProvided: "Não informado"
     },
 
     en: {
@@ -248,7 +262,21 @@ const translations = {
         errorAssigneeInactive: "The assignee must be active.",
         errorAssigneeInvalidRole: "The assignee must be Support or Administrator.",
         errorTicketAlreadyAssigned: "This ticket already has an assignee.",
-        errorTicketNotOpen: "Only open tickets can be claimed."
+        errorTicketNotOpen: "Only open tickets can be claimed.",
+
+        errorCannotChangeOwnRole: "You cannot change your own role.",
+        errorRoleRequired: "Role is required.",
+        errorInvalidRole: "Invalid role.",
+        errorUserNotFound: "User not found.",
+        errorCannotDeactivateOwnAccount: "You cannot deactivate your own account.",
+        errorInvalidActiveValue: "Account status must be active or inactive.",
+
+        errorNameRequired: "Name is required.",
+        errorPasswordsRequired: "Current password and new password are required.",
+        errorPasswordsMustDiffer: "The new password must be different from the current password.",
+        errorNewPasswordTooShort: "The new password must have at least 8 characters.",
+        errorCurrentPasswordIncorrect: "Current password is incorrect.",
+        notProvided: "Not provided"
     }
 };
 

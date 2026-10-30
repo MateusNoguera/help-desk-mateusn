@@ -57,7 +57,7 @@ passwordForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-            passwordMessage.textContent = data.message;
+            passwordMessage.textContent = getApiErrorMessage(data, "errorChangePassword");
             return;
         }
 
@@ -93,7 +93,7 @@ nameForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-            nameMessage.textContent = data.message;
+            nameMessage.textContent = getApiErrorMessage(data, "errorChangeName");
             return;
         }
 
@@ -120,6 +120,23 @@ document.addEventListener("languageChanged", () => {
     loadAccount();
 });
 
+function getApiErrorMessage(data, fallbackKey) {
+    const errorKeys = {
+        NAME_REQUIRED: "errorNameRequired",
+        USER_NOT_FOUND: "errorUserNotFound",
+        PASSWORDS_REQUIRED: "errorPasswordsRequired",
+        PASSWORDS_MUST_DIFFER: "errorPasswordsMustDiffer",
+        NEW_PASSWORD_TOO_SHORT: "errorNewPasswordTooShort",
+        CURRENT_PASSWORD_INCORRECT: "errorCurrentPasswordIncorrect"
+    };
+
+    if (data.code && errorKeys[data.code]) {
+        return t(errorKeys[data.code]);
+    }
+
+    return t(fallbackKey);
+}
+
 async function loadAccount() {
     try {
         const response = await fetch("/auth/me", {
@@ -138,7 +155,7 @@ async function loadAccount() {
 
         const data = await response.json();
 
-        accountName.textContent = data.user.name || "Não informado";
+        accountName.textContent = data.user.name || t("notProvided");
         accountEmail.textContent = data.user.email;
         accountRole.textContent = translateRole(data.user.role);
     } catch (error) {

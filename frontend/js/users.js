@@ -121,7 +121,7 @@ async function loadUsers() {
                         const data = await response.json();
 
                         if (!response.ok) {
-                            alert(data.message);
+                            alert(getApiErrorMessage(data, "errorUpdateUser"));
                             return;
                         }
 
@@ -172,7 +172,7 @@ async function loadUsers() {
                     const data = await response.json();
 
                     if (!response.ok) {
-                        alert(data.message);
+                        alert(getApiErrorMessage(data, "errorChangeUserStatus"));
                         return;
                     }
 
@@ -233,12 +233,34 @@ function translateRole(role) {
     return t(roleKeys[role]) || role;
 }
 
+function getApiErrorMessage(data, fallbackKey) {
+    const errorKeys = {
+        CANNOT_CHANGE_OWN_ROLE: "errorCannotChangeOwnRole",
+        ROLE_REQUIRED: "errorRoleRequired",
+        INVALID_ROLE: "errorInvalidRole",
+        USER_NOT_FOUND: "errorUserNotFound",
+        CANNOT_DEACTIVATE_OWN_ACCOUNT: "errorCannotDeactivateOwnAccount",
+        INVALID_ACTIVE_VALUE: "errorInvalidActiveValue"
+    };
+
+    if (data.code && errorKeys[data.code]) {
+        return t(errorKeys[data.code]);
+    }
+
+    return t(fallbackKey);
+}
+
 document.addEventListener("languageChanged", () => {
     loadUsers();
 });
 
 async function init() {
     await loadCurrentUser();
+
+    if (!currentUser) {
+        return;
+    }
+    
     await loadUsers();
 }
 

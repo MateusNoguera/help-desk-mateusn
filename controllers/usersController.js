@@ -13,18 +13,21 @@ export async function createUser(req, res) {
 
         if (!name || !email || !password) {
             return res.status(400).json({
+                code: "USER_FIELDS_REQUIRED",
                 message: "Name, email and password are required!"
             });
         }
 
         if (name.trim().length < 2) {
             return res.status(400).json({
+                code: "NAME_TOO_SHORT",
                 message: "Name must have at least 2 characters!"
             });
         }
 
         if (password.length < 8) {
             return res.status(400).json({
+                code: "PASSWORD_TOO_SHORT",
                 message: "Password must have at least 8 characters!"
             });
         }
@@ -53,6 +56,7 @@ export async function createUser(req, res) {
 
         if (error.code === "23505") {
             return res.status(409).json({
+                code: "EMAIL_ALREADY_REGISTERED",
                 message: "Email already registered!"
             });
         }
@@ -90,18 +94,21 @@ export async function updateUserRole(req, res) {
 
         if (Number(id) === req.user.id) {
             return res.status(400).json({
+                code: "CANNOT_CHANGE_OWN_ROLE",
                 message: "You cannot change your own role!"
             });
         }
 
         if (!role) {
             return res.status(400).json({
+                code: "ROLE_REQUIRED",
                 message: "Role is required!"
             });
         }
 
         if (!validRoles.includes(role)) {
             return res.status(400).json({
+                code: "INVALID_ROLE",
                 message: "Invalid role!"
             });
         }
@@ -118,6 +125,7 @@ export async function updateUserRole(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "USER_NOT_FOUND",
                 message: "User not found!"
             });
         }
@@ -164,18 +172,21 @@ export async function updateOwnPassword(req, res) {
 
         if (!currentPassword || !newPassword) {
             return res.status(400).json({
+                code: "PASSWORDS_REQUIRED",
                 message: "Current password and new password are required!"
             });
         }
 
         if (currentPassword === newPassword) {
             return res.status(400).json({
+                code: "PASSWORDS_MUST_DIFFER",
                 message: "New password must be different from current password!"
             });
         }
 
         if (newPassword.length < 8) {
             return res.status(400).json({
+                code: "NEW_PASSWORD_TOO_SHORT",
                 message: "New password must have at least 8 characters!"
             });
         }
@@ -187,6 +198,7 @@ export async function updateOwnPassword(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "USER_NOT_FOUND",
                 message: "User not found!"
             });
         }
@@ -197,6 +209,7 @@ export async function updateOwnPassword(req, res) {
 
         if (!passwordMatches) {
             return res.status(401).json({
+                code: "CURRENT_PASSWORD_INCORRECT",
                 message: "Current password is incorrect!"
             });
         }
@@ -227,6 +240,7 @@ export async function updateOwnName(req, res) {
 
         if (!name) {
             return res.status(400).json({
+                code: "NAME_REQUIRED",
                 message: "Name is required!"
             });
         }
@@ -243,6 +257,7 @@ export async function updateOwnName(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "USER_NOT_FOUND",
                 message: "User not found!"
             });
         }
@@ -266,12 +281,14 @@ export async function updateUserActiveStatus(req, res) {
 
         if (Number(id) === req.user.id && active === false) {
             return res.status(400).json({
+                code: "CANNOT_DEACTIVATE_OWN_ACCOUNT",
                 message: "You cannot deactivate your own account!"
             });
         }
 
         if (typeof active !== "boolean") {
             return res.status(400).json({
+                code: "INVALID_ACTIVE_VALUE",
                 message: "Active must be true or false!"
             });
         }
@@ -288,6 +305,7 @@ export async function updateUserActiveStatus(req, res) {
 
         if (result.rows.length === 0) {
             return res.status(404).json({
+                code: "USER_NOT_FOUND",
                 message: "User not found!"
             });
         }
